@@ -14,10 +14,15 @@
             string region;
             string city;
             string isp;
+            string domain;
+            string usagetype;
+            string asn;
+            string @as;
+            string lastseen;
 
             string ip = "221.121.146.0";
 
-            if (proxy.Open("C:\\data\\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) == 0)
+            if (proxy.Open("C:\\data\\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) == 0)
             {
                 System.Console.WriteLine("GetModuleVersion: " + proxy.GetModuleVersion());
                 System.Console.WriteLine("GetPackageVersion: " + proxy.GetPackageVersion());
@@ -32,6 +37,11 @@
                 System.Console.WriteLine("Region: " + all.Region);
                 System.Console.WriteLine("City: " + all.City);
                 System.Console.WriteLine("ISP: " + all.ISP);
+                System.Console.WriteLine("Domain: " + all.Domain);
+                System.Console.WriteLine("Usage_Type: " + all.Usage_Type);
+                System.Console.WriteLine("ASN: " + all.ASN);
+                System.Console.WriteLine("AS: " + all.AS);
+                System.Console.WriteLine("Last_Seen: " + all.Last_Seen);
 
                 // reading individual fields
                 isproxy = proxy.IsProxy(ip);
@@ -54,6 +64,21 @@
 
                 isp = proxy.GetISP(ip);
                 System.Console.WriteLine("ISP: " + isp);
+
+                domain = proxy.GetDomain(ip);
+                System.Console.WriteLine("Domain: " + domain);
+
+                usagetype= proxy.GetUsageType(ip);
+                System.Console.WriteLine("Usage_Type: " + usagetype);
+
+                asn = proxy.GetASN(ip);
+                System.Console.WriteLine("ASN: " + asn);
+
+                @as = proxy.GetAS(ip);
+                System.Console.WriteLine("AS: " + @as);
+
+                lastseen= proxy.GetLastSeen(ip);
+                System.Console.WriteLine("Last_Seen: " + lastseen);
             }
             else
             {

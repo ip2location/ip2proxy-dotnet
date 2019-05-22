@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("IP2Proxy .NET Component")> 
 <Assembly: AssemblyCompany("http://www.ip2location.com")> 
 <Assembly: AssemblyProduct("IP2Proxy .NET Component")> 
-<Assembly: AssemblyCopyright("Copyright (c) 2005-2016. All Rights Reserved.")> 
+<Assembly: AssemblyCopyright("Copyright (c) 2005-2019. All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("IP2Proxy is registered trademark of Hexasoft Development Sdn. Bhd.")> 
 
 <Assembly: ComVisible(True)> 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.2.0")> 
-<Assembly: AssemblyFileVersion("1.0.2.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")> 
+<Assembly: AssemblyFileVersion("2.0.0.0")> 

@@ -18,6 +18,11 @@ Public Structure ProxyResult
     Public Region As String
     Public City As String
     Public ISP As String
+    Public Domain As String
+    Public Usage_Type As String
+    Public ASN As String
+    Public [AS] As String
+    Public Last_Seen As String
 End Structure
 
 Public Class Component
@@ -79,26 +84,46 @@ Public Class Component
         ISP = 5
         PROXY_TYPE = 6
         IS_PROXY = 7
+        DOMAIN = 8
+        USAGE_TYPE = 9
+        ASN = 10
+        [AS] = 11
+        LAST_SEEN = 12
         ALL = 100
     End Enum
 
-    Private COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3}
-    Private REGION_POSITION() As Byte = {0, 0, 0, 4, 4}
-    Private CITY_POSITION() As Byte = {0, 0, 0, 5, 5}
-    Private ISP_POSITION() As Byte = {0, 0, 0, 0, 6}
-    Private PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2}
+    Private COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3}
+    Private REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4}
+    Private CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5}
+    Private ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6}
+    Private PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2}
+    Private DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7}
+    Private USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8}
+    Private ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9}
+    Private AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10}
+    Private LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11}
 
     Private COUNTRY_POSITION_OFFSET As Integer = 0
     Private REGION_POSITION_OFFSET As Integer = 0
     Private CITY_POSITION_OFFSET As Integer = 0
     Private ISP_POSITION_OFFSET As Integer = 0
     Private PROXYTYPE_POSITION_OFFSET As Integer = 0
+    Private DOMAIN_POSITION_OFFSET As Integer = 0
+    Private USAGETYPE_POSITION_OFFSET As Integer = 0
+    Private ASN_POSITION_OFFSET As Integer = 0
+    Private AS_POSITION_OFFSET As Integer = 0
+    Private LASTSEEN_POSITION_OFFSET As Integer = 0
 
     Private COUNTRY_ENABLED As Boolean = False
     Private REGION_ENABLED As Boolean = False
     Private CITY_ENABLED As Boolean = False
     Private ISP_ENABLED As Boolean = False
     Private PROXYTYPE_ENABLED As Boolean = False
+    Private DOMAIN_ENABLED As Boolean = False
+    Private USAGETYPE_ENABLED As Boolean = False
+    Private ASN_ENABLED As Boolean = False
+    Private AS_ENABLED As Boolean = False
+    Private LASTSEEN_ENABLED As Boolean = False
 
     'Description: Returns the module version
     Public Function GetModuleVersion() As String
@@ -124,8 +149,8 @@ Public Class Component
     Public Function IsProxy(IP As String) As Integer
         ' -1 is error
         '  0 is not a proxy
-        '  1 is proxy except DCH
-        '  2 is proxy and DCH
+        '  1 is proxy except DCH and SES
+        '  2 is proxy and (DCH or SES)
         Return ProxyQuery(IP, Modes.IS_PROXY).Is_Proxy
     End Function
 
@@ -157,6 +182,31 @@ Public Class Component
     'Description: Returns a string for the proxy type
     Public Function GetProxyType(IP As String) As String
         Return ProxyQuery(IP, Modes.PROXY_TYPE).Proxy_Type
+    End Function
+
+    'Description: Returns a string for the domain
+    Public Function GetDomain(IP As String) As String
+        Return ProxyQuery(IP, Modes.DOMAIN).Domain
+    End Function
+
+    'Description: Returns a string for the usage type
+    Public Function GetUsageType(IP As String) As String
+        Return ProxyQuery(IP, Modes.USAGE_TYPE).Usage_Type
+    End Function
+
+    'Description: Returns a string for the ASN
+    Public Function GetASN(IP As String) As String
+        Return ProxyQuery(IP, Modes.ASN).ASN
+    End Function
+
+    'Description: Returns a string for the AS
+    Public Function GetAS(IP As String) As String
+        Return ProxyQuery(IP, Modes.AS).AS
+    End Function
+
+    'Description: Returns a string for the last seen
+    Public Function GetLastSeen(IP As String) As String
+        Return ProxyQuery(IP, Modes.LAST_SEEN).Last_Seen
     End Function
 
     'Description: Returns all results
@@ -259,12 +309,22 @@ Public Class Component
                     CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 1) << 2, 0)
                     ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 1) << 2, 0)
                     PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 1) << 2, 0)
+                    DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 1) << 2, 0)
+                    USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 1) << 2, 0)
+                    ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
+                    AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
+                    LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
 
                     COUNTRY_ENABLED = If(COUNTRY_POSITION(_DBType) <> 0, True, False)
                     REGION_ENABLED = If(REGION_POSITION(_DBType) <> 0, True, False)
                     CITY_ENABLED = If(CITY_POSITION(_DBType) <> 0, True, False)
                     ISP_ENABLED = If(ISP_POSITION(_DBType) <> 0, True, False)
                     PROXYTYPE_ENABLED = If(PROXYTYPE_POSITION(_DBType) <> 0, True, False)
+                    DOMAIN_ENABLED = If(DOMAIN_POSITION(_DBType) <> 0, True, False)
+                    USAGETYPE_ENABLED = If(USAGETYPE_POSITION(_DBType) <> 0, True, False)
+                    ASN_ENABLED = If(ASN_POSITION(_DBType) <> 0, True, False)
+                    AS_ENABLED = If(AS_POSITION(_DBType) <> 0, True, False)
+                    LASTSEEN_ENABLED = If(LASTSEEN_POSITION(_DBType) <> 0, True, False)
                 End Using
 
                 Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
@@ -364,6 +424,11 @@ Public Class Component
                     .Region = MSG_INVALID_IP
                     .City = MSG_INVALID_IP
                     .ISP = MSG_INVALID_IP
+                    .Domain = MSG_INVALID_IP
+                    .Usage_Type = MSG_INVALID_IP
+                    .ASN = MSG_INVALID_IP
+                    .AS = MSG_INVALID_IP
+                    .Last_Seen = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -380,6 +445,11 @@ Public Class Component
                     .Region = MSG_INVALID_IP
                     .City = MSG_INVALID_IP
                     .ISP = MSG_INVALID_IP
+                    .Domain = MSG_INVALID_IP
+                    .Usage_Type = MSG_INVALID_IP
+                    .ASN = MSG_INVALID_IP
+                    .AS = MSG_INVALID_IP
+                    .Last_Seen = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -395,6 +465,11 @@ Public Class Component
                         .Region = MSG_MISSING_FILE
                         .City = MSG_MISSING_FILE
                         .ISP = MSG_MISSING_FILE
+                        .Domain = MSG_MISSING_FILE
+                        .Usage_Type = MSG_MISSING_FILE
+                        .ASN = MSG_MISSING_FILE
+                        .AS = MSG_MISSING_FILE
+                        .Last_Seen = MSG_MISSING_FILE
                     End With
                     Return Result
                 End If
@@ -436,6 +511,11 @@ Public Class Component
                             .Region = MSG_IPV6_UNSUPPORTED
                             .City = MSG_IPV6_UNSUPPORTED
                             .ISP = MSG_IPV6_UNSUPPORTED
+                            .Domain = MSG_IPV6_UNSUPPORTED
+                            .Usage_Type = MSG_IPV6_UNSUPPORTED
+                            .ASN = MSG_IPV6_UNSUPPORTED
+                            .AS = MSG_IPV6_UNSUPPORTED
+                            .Last_Seen = MSG_IPV6_UNSUPPORTED
                         End With
                         Return Result
                     End If
@@ -481,6 +561,11 @@ Public Class Component
                     Dim Region As String = MSG_NOT_SUPPORTED
                     Dim City As String = MSG_NOT_SUPPORTED
                     Dim ISP As String = MSG_NOT_SUPPORTED
+                    Dim Domain As String = MSG_NOT_SUPPORTED
+                    Dim Usage_Type As String = MSG_NOT_SUPPORTED
+                    Dim ASN As String = MSG_NOT_SUPPORTED
+                    Dim [AS] As String = MSG_NOT_SUPPORTED
+                    Dim Last_Seen As String = MSG_NOT_SUPPORTED
 
                     If IPType = 6 Then ' IPv6
                         RowOffset = RowOffset + 12 ' coz below is assuming all columns are 4 bytes, so got 12 left to go to make 16 bytes total
@@ -517,11 +602,36 @@ Public Class Component
                             ISP = ReadStr(Read32(RowOffset + ISP_POSITION_OFFSET, Accessor, FS), FS)
                         End If
                     End If
+                    If DOMAIN_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.DOMAIN Then
+                            Domain = ReadStr(Read32(RowOffset + DOMAIN_POSITION_OFFSET, Accessor, FS), FS)
+                        End If
+                    End If
+                    If USAGETYPE_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.USAGE_TYPE Then
+                            Usage_Type = ReadStr(Read32(RowOffset + USAGETYPE_POSITION_OFFSET, Accessor, FS), FS)
+                        End If
+                    End If
+                    If ASN_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.ASN Then
+                            ASN = ReadStr(Read32(RowOffset + ASN_POSITION_OFFSET, Accessor, FS), FS)
+                        End If
+                    End If
+                    If AS_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.AS Then
+                            [AS] = ReadStr(Read32(RowOffset + AS_POSITION_OFFSET, Accessor, FS), FS)
+                        End If
+                    End If
+                    If LASTSEEN_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.LAST_SEEN Then
+                            Last_Seen = ReadStr(Read32(RowOffset + LASTSEEN_POSITION_OFFSET, Accessor, FS), FS)
+                        End If
+                    End If
 
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
                     Else
-                        If Proxy_Type = "DCH" Then
+                        If Proxy_Type = "DCH" OrElse Proxy_Type = "SES" Then
                             Is_Proxy = 2
                         Else
                             Is_Proxy = 1
@@ -536,6 +646,11 @@ Public Class Component
                         .Region = Region
                         .City = City
                         .ISP = ISP
+                        .Domain = Domain
+                        .Usage_Type = Usage_Type
+                        .ASN = ASN
+                        .AS = [AS]
+                        .Last_Seen = Last_Seen
                     End With
                     Return Result
                 Else
@@ -555,6 +670,11 @@ Public Class Component
                 .Region = MSG_INVALID_IP
                 .City = MSG_INVALID_IP
                 .ISP = MSG_INVALID_IP
+                .Domain = MSG_INVALID_IP
+                .Usage_Type = MSG_INVALID_IP
+                .ASN = MSG_INVALID_IP
+                .AS = MSG_INVALID_IP
+                .Last_Seen = MSG_INVALID_IP
             End With
             Return Result
         Catch ex As Exception

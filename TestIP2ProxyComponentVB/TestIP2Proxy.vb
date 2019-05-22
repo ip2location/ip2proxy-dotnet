@@ -13,10 +13,15 @@ Module TestIP2Proxy
         Dim region As String
         Dim city As String
         Dim isp As String
+        Dim domain As String
+        Dim usagetype As String
+        Dim asn As String
+        Dim [as] As String
+        Dim lastseen As String
 
-        Dim ip As String = "221.121.146.0"
+        Dim ip As String = "46.101.133.66"
 
-        If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
+        If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
             Console.WriteLine("GetModuleVersion: " & proxy.GetModuleVersion())
             Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
             Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
@@ -30,6 +35,11 @@ Module TestIP2Proxy
             Console.WriteLine("Region: " & all.Region)
             Console.WriteLine("City: " & all.City)
             Console.WriteLine("ISP: " & all.ISP)
+            Console.WriteLine("Domain: " & all.Domain)
+            Console.WriteLine("Usage_Type: " & all.Usage_Type)
+            Console.WriteLine("ASN: " & all.ASN)
+            Console.WriteLine("AS: " & all.AS)
+            Console.WriteLine("Last_Seen: " & all.Last_Seen)
 
             ' reading individual fields
             isproxy = proxy.IsProxy(ip)
@@ -52,6 +62,21 @@ Module TestIP2Proxy
 
             isp = proxy.GetISP(ip)
             Console.WriteLine("ISP: " & isp)
+
+            domain = proxy.GetDomain(ip)
+            Console.WriteLine("Domain: " & domain)
+
+            usagetype = proxy.GetUsageType(ip)
+            Console.WriteLine("Usage_Type: " & usagetype)
+
+            asn = proxy.GetASN(ip)
+            Console.WriteLine("ASN: " & asn)
+
+            [as] = proxy.GetAS(ip)
+            Console.WriteLine("AS: " & [as])
+
+            lastseen = proxy.GetLastSeen(ip)
+            Console.WriteLine("Last_Seen: " & lastseen)
         Else
             Console.WriteLine("Error reading BIN file.")
         End If
