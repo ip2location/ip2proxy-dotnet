@@ -29,7 +29,7 @@ Below are the methods supported in this class.
 |GetCity|Return the city name of the proxy.|
 |GetISP|Return the ISP name of the proxy.|
 |GetDomain|Return the domain name of the proxy.|
-|GetUsageType|Return the usage type classification of the proxy. Please visit <a href="https://www.ip2location.com/database/px8-ip-proxytype-country-region-city-isp-domain-usagetype-asn-lastseen" target="_blank">IP2Location</a> for the list of usage types supported|
+|GetUsageType|Return the usage type classification of the proxy. Please visit <a href="https://www.ip2location.com/database/px8-ip-proxytype-country-region-city-isp-domain-usagetype-asn-lastseen" target="_blank">IP2Location</a> for the list of usage types supported.|
 |GetASN|Return the autonomous system number of the proxy.|
 |GetAS|Return the autonomous system name of the proxy.|
 |GetLastSeen|Return the number of days that the proxy was last seen.|
