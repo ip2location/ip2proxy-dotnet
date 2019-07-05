@@ -63,6 +63,11 @@ Public Class Component
 
     Private _FromBI As New BigInteger(281470681743360)
     Private _ToBI As New BigInteger(281474976710655)
+    Private _FromBI2 As BigInteger = BigInteger.Parse("42545680458834377588178886921629466624")
+    Private _ToBI2 As BigInteger = BigInteger.Parse("42550872755692912415807417417958686719")
+    Private _FromBI3 As BigInteger = BigInteger.Parse("42540488161975842760550356425300246528")
+    Private _ToBI3 As BigInteger = BigInteger.Parse("42540488241204005274814694018844196863")
+    Private _DivBI As BigInteger = New BigInteger(4294967295)
 
     Private Const MAX_IPV4_RANGE As Long = 4294967295
     Private MAX_IPV6_RANGE As BigInteger = BigInteger.Pow(2, 128) - 1
@@ -867,6 +872,18 @@ Public Class Component
                             Tmp = String.Join("", Enumerable.Repeat("0000:", 5).ToList)
                             FinalIP = FinalIP.Replace("::", Tmp)
                         End If
+                    ElseIf IPNum >= _FromBI2 AndAlso IPNum <= _ToBI2 Then
+                        '6to4 so need to remap to ipv4
+                        StrIPType = 4
+
+                        IPNum = IPNum >> 80
+                        IPNum = IPNum And _DivBI ' get last 32 bits
+                    ElseIf IPNum >= _FromBI3 AndAlso IPNum <= _ToBI3 Then
+                        'Teredo so need to remap to ipv4
+                        StrIPType = 4
+
+                        IPNum = Not IPNum
+                        IPNum = IPNum And _DivBI ' get last 32 bits
                     ElseIf IPNum <= MAX_IPV4_RANGE Then
                         'ipv4-compatible ipv6 (DEPRECATED BUT STILL SUPPORTED BY .NET)
                         StrIPType = 4
