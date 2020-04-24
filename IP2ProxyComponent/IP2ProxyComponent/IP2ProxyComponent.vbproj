@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>IP2Proxy</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+    <AssemblyName>IP2Proxy</AssemblyName>
+    <Version>2.3.1</Version>
+    <Authors>IP2Proxy.com</Authors>
+    <Company>IP2Proxy.com</Company>
+    <Product>IP2Proxy .NET Component</Product>
+    <Description>IP2Proxy .NET Component</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Copyright 2020</Copyright>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
+    <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
+    <PackageReleaseNotes>Target multiple frameworks</PackageReleaseNotes>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageTags>ip2proxy proxy detection</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="ip2proxy-logo-square-128.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

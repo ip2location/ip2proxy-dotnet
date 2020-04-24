@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.IO
 Imports System.IO.MemoryMappedFiles
 Imports System.Data
@@ -866,7 +866,7 @@ Public Class Component
     Private Sub ErrLog(ByVal StrMessage As String)
         Dim FS As FileStream = New FileStream(System.AppDomain.CurrentDomain.BaseDirectory & "ip2proxy_errLog.txt", FileMode.Append)
         Dim ObjWriter As StreamWriter = New StreamWriter(FS)
-        ObjWriter.WriteLine(Now & "," & StrMessage)
+        ObjWriter.WriteLine(DateTime.Now() & "," & StrMessage)
         ObjWriter.Close()
         FS.Close()
     End Sub

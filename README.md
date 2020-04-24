@@ -7,7 +7,7 @@ This component allows user to query an IP address if it was being used as VPN an
 
 ## Requirements
 
-Microsoft .NET 4.0 framework or later.
+Microsoft .NET 4.72 framework or later.
 Compatible with .NET Core 2.x/3.x SDK.
 
 ## Methods
