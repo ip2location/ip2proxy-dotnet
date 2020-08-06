@@ -23,6 +23,7 @@ Public Structure ProxyResult
     Public ASN As String
     Public [AS] As String
     Public Last_Seen As String
+    Public Threat As String
 End Structure
 
 Public Class Component
@@ -94,19 +95,21 @@ Public Class Component
         ASN = 10
         [AS] = 11
         LAST_SEEN = 12
+        THREAT = 13
         ALL = 100
     End Enum
 
-    Private COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3}
-    Private REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4}
-    Private CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5}
-    Private ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6}
-    Private PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2}
-    Private DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7}
-    Private USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8}
-    Private ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9}
-    Private AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10}
-    Private LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11}
+    Private COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+    Private REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4}
+    Private CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5}
+    Private ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6}
+    Private PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2}
+    Private DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7}
+    Private USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8}
+    Private ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9}
+    Private AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10}
+    Private LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11}
+    Private THREAT_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12}
 
     Private COUNTRY_POSITION_OFFSET As Integer = 0
     Private REGION_POSITION_OFFSET As Integer = 0
@@ -118,6 +121,7 @@ Public Class Component
     Private ASN_POSITION_OFFSET As Integer = 0
     Private AS_POSITION_OFFSET As Integer = 0
     Private LASTSEEN_POSITION_OFFSET As Integer = 0
+    Private THREAT_POSITION_OFFSET As Integer = 0
 
     Private COUNTRY_ENABLED As Boolean = False
     Private REGION_ENABLED As Boolean = False
@@ -129,6 +133,7 @@ Public Class Component
     Private ASN_ENABLED As Boolean = False
     Private AS_ENABLED As Boolean = False
     Private LASTSEEN_ENABLED As Boolean = False
+    Private THREAT_ENABLED As Boolean = False
 
     'Description: Returns the module version
     Public Function GetModuleVersion() As String
@@ -212,6 +217,11 @@ Public Class Component
     'Description: Returns a string for the last seen
     Public Function GetLastSeen(IP As String) As String
         Return ProxyQuery(IP, Modes.LAST_SEEN).Last_Seen
+    End Function
+
+    'Description: Returns a string for the threat
+    Public Function GetThreat(IP As String) As String
+        Return ProxyQuery(IP, Modes.THREAT).Threat
     End Function
 
     'Description: Returns all results
@@ -355,6 +365,7 @@ Public Class Component
                     'ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
                     'AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
                     'LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
+                    'THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 1) << 2, 0)
 
                     ' slightly different offset for reading by row
                     COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 2) << 2, 0)
@@ -367,6 +378,7 @@ Public Class Component
                     ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 2) << 2, 0)
                     AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 2) << 2, 0)
                     LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
+                    THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
 
                     COUNTRY_ENABLED = If(COUNTRY_POSITION(_DBType) <> 0, True, False)
                     REGION_ENABLED = If(REGION_POSITION(_DBType) <> 0, True, False)
@@ -378,6 +390,7 @@ Public Class Component
                     ASN_ENABLED = If(ASN_POSITION(_DBType) <> 0, True, False)
                     AS_ENABLED = If(AS_POSITION(_DBType) <> 0, True, False)
                     LASTSEEN_ENABLED = If(LASTSEEN_POSITION(_DBType) <> 0, True, False)
+                    THREAT_ENABLED = If(THREAT_POSITION(_DBType) <> 0, True, False)
                 End Using
 
                 Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
@@ -482,6 +495,7 @@ Public Class Component
                     .ASN = MSG_INVALID_IP
                     .AS = MSG_INVALID_IP
                     .Last_Seen = MSG_INVALID_IP
+                    .Threat = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -503,6 +517,7 @@ Public Class Component
                     .ASN = MSG_INVALID_IP
                     .AS = MSG_INVALID_IP
                     .Last_Seen = MSG_INVALID_IP
+                    .Threat = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -523,6 +538,7 @@ Public Class Component
                         .ASN = MSG_MISSING_FILE
                         .AS = MSG_MISSING_FILE
                         .Last_Seen = MSG_MISSING_FILE
+                        .Threat = MSG_MISSING_FILE
                     End With
                     Return Result
                 End If
@@ -569,6 +585,7 @@ Public Class Component
                             .ASN = MSG_IPV6_UNSUPPORTED
                             .AS = MSG_IPV6_UNSUPPORTED
                             .Last_Seen = MSG_IPV6_UNSUPPORTED
+                            .Threat = MSG_IPV6_UNSUPPORTED
                         End With
                         Return Result
                     End If
@@ -619,6 +636,7 @@ Public Class Component
                     Dim ASN As String = MSG_NOT_SUPPORTED
                     Dim [AS] As String = MSG_NOT_SUPPORTED
                     Dim Last_Seen As String = MSG_NOT_SUPPORTED
+                    Dim Threat As String = MSG_NOT_SUPPORTED
 
                     Dim FirstCol As Integer = 4 ' for IPv4, IP From is 4 bytes
                     If IPType = 6 Then ' IPv6
@@ -695,6 +713,12 @@ Public Class Component
                             Last_Seen = ReadStr(Read32_Row(Row, LASTSEEN_POSITION_OFFSET), FS)
                         End If
                     End If
+                    If THREAT_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.THREAT Then
+                            'Threat = ReadStr(Read32(RowOffset + THREAT_POSITION_OFFSET, Accessor, FS), FS)
+                            Threat = ReadStr(Read32_Row(Row, THREAT_POSITION_OFFSET), FS)
+                        End If
+                    End If
 
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
@@ -719,6 +743,7 @@ Public Class Component
                         .ASN = ASN
                         .AS = [AS]
                         .Last_Seen = Last_Seen
+                        .Threat = Threat
                     End With
                     Return Result
                 Else
@@ -743,6 +768,7 @@ Public Class Component
                 .ASN = MSG_INVALID_IP
                 .AS = MSG_INVALID_IP
                 .Last_Seen = MSG_INVALID_IP
+                .Threat = MSG_INVALID_IP
             End With
             Return Result
         Catch ex As Exception
