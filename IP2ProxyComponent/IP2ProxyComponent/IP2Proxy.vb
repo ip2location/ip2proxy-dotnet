@@ -337,88 +337,90 @@ Public Class Component
             If _DBFilePath <> "" Then
                 CreateMemoryMappedFile()
 
-                ' below use temp accessor as we only need once to read meta data (use this even when in filestream mode)
-                Using _MetaAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(0, 64, MemoryMappedFileAccess.Read) ' 64 bytes header
-                    _DBType = _MetaAccessor.ReadByte(0)
-                    _DBColumn = _MetaAccessor.ReadByte(1)
-                    _DBYear = _MetaAccessor.ReadByte(2)
-                    _DBMonth = _MetaAccessor.ReadByte(3)
-                    _DBDay = _MetaAccessor.ReadByte(4)
-                    _DBCount = _MetaAccessor.ReadInt32(5) '4 bytes
-                    _BaseAddr = _MetaAccessor.ReadInt32(9) '4 bytes
-                    _DBCountIPv6 = _MetaAccessor.ReadInt32(13) '4 bytes
-                    _BaseAddrIPv6 = _MetaAccessor.ReadInt32(17) '4 bytes
-                    _IndexBaseAddr = _MetaAccessor.ReadInt32(21) '4 bytes
-                    _IndexBaseAddrIPv6 = _MetaAccessor.ReadInt32(25) '4 bytes
+                If _MMF IsNot Nothing Then
+                    ' below use temp accessor as we only need once to read meta data (use this even when in filestream mode)
+                    Using _MetaAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(0, 64, MemoryMappedFileAccess.Read) ' 64 bytes header
+                        _DBType = _MetaAccessor.ReadByte(0)
+                        _DBColumn = _MetaAccessor.ReadByte(1)
+                        _DBYear = _MetaAccessor.ReadByte(2)
+                        _DBMonth = _MetaAccessor.ReadByte(3)
+                        _DBDay = _MetaAccessor.ReadByte(4)
+                        _DBCount = _MetaAccessor.ReadInt32(5) '4 bytes
+                        _BaseAddr = _MetaAccessor.ReadInt32(9) '4 bytes
+                        _DBCountIPv6 = _MetaAccessor.ReadInt32(13) '4 bytes
+                        _BaseAddrIPv6 = _MetaAccessor.ReadInt32(17) '4 bytes
+                        _IndexBaseAddr = _MetaAccessor.ReadInt32(21) '4 bytes
+                        _IndexBaseAddrIPv6 = _MetaAccessor.ReadInt32(25) '4 bytes
 
-                    _IPv4ColumnSize = _DBColumn << 2 ' 4 bytes each column
-                    _IPv6ColumnSize = 16 + ((_DBColumn - 1) << 2) ' 4 bytes each column, except IPFrom column which is 16 bytes
+                        _IPv4ColumnSize = _DBColumn << 2 ' 4 bytes each column
+                        _IPv6ColumnSize = 16 + ((_DBColumn - 1) << 2) ' 4 bytes each column, except IPFrom column which is 16 bytes
 
-                    ' since both IPv4 and IPv6 use 4 bytes for the below columns, can just do it once here
-                    'COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 1) << 2, 0)
-                    'REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 1) << 2, 0)
-                    'CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 1) << 2, 0)
-                    'ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 1) << 2, 0)
-                    'PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 1) << 2, 0)
-                    'DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 1) << 2, 0)
-                    'USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 1) << 2, 0)
-                    'ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
-                    'AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
-                    'LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
-                    'THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 1) << 2, 0)
+                        ' since both IPv4 and IPv6 use 4 bytes for the below columns, can just do it once here
+                        'COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 1) << 2, 0)
+                        'REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 1) << 2, 0)
+                        'CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 1) << 2, 0)
+                        'ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 1) << 2, 0)
+                        'PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 1) << 2, 0)
+                        'DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 1) << 2, 0)
+                        'USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 1) << 2, 0)
+                        'ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
+                        'AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
+                        'LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
+                        'THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 1) << 2, 0)
 
-                    ' slightly different offset for reading by row
-                    COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 2) << 2, 0)
-                    REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 2) << 2, 0)
-                    CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 2) << 2, 0)
-                    ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 2) << 2, 0)
-                    PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 2) << 2, 0)
-                    DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 2) << 2, 0)
-                    USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 2) << 2, 0)
-                    ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 2) << 2, 0)
-                    AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 2) << 2, 0)
-                    LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
-                    THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
+                        ' slightly different offset for reading by row
+                        COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 2) << 2, 0)
+                        REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 2) << 2, 0)
+                        CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 2) << 2, 0)
+                        ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 2) << 2, 0)
+                        PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 2) << 2, 0)
+                        DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 2) << 2, 0)
+                        USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 2) << 2, 0)
+                        ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 2) << 2, 0)
+                        AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 2) << 2, 0)
+                        LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
+                        THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
 
-                    COUNTRY_ENABLED = If(COUNTRY_POSITION(_DBType) <> 0, True, False)
-                    REGION_ENABLED = If(REGION_POSITION(_DBType) <> 0, True, False)
-                    CITY_ENABLED = If(CITY_POSITION(_DBType) <> 0, True, False)
-                    ISP_ENABLED = If(ISP_POSITION(_DBType) <> 0, True, False)
-                    PROXYTYPE_ENABLED = If(PROXYTYPE_POSITION(_DBType) <> 0, True, False)
-                    DOMAIN_ENABLED = If(DOMAIN_POSITION(_DBType) <> 0, True, False)
-                    USAGETYPE_ENABLED = If(USAGETYPE_POSITION(_DBType) <> 0, True, False)
-                    ASN_ENABLED = If(ASN_POSITION(_DBType) <> 0, True, False)
-                    AS_ENABLED = If(AS_POSITION(_DBType) <> 0, True, False)
-                    LASTSEEN_ENABLED = If(LASTSEEN_POSITION(_DBType) <> 0, True, False)
-                    THREAT_ENABLED = If(THREAT_POSITION(_DBType) <> 0, True, False)
-                End Using
+                        COUNTRY_ENABLED = If(COUNTRY_POSITION(_DBType) <> 0, True, False)
+                        REGION_ENABLED = If(REGION_POSITION(_DBType) <> 0, True, False)
+                        CITY_ENABLED = If(CITY_POSITION(_DBType) <> 0, True, False)
+                        ISP_ENABLED = If(ISP_POSITION(_DBType) <> 0, True, False)
+                        PROXYTYPE_ENABLED = If(PROXYTYPE_POSITION(_DBType) <> 0, True, False)
+                        DOMAIN_ENABLED = If(DOMAIN_POSITION(_DBType) <> 0, True, False)
+                        USAGETYPE_ENABLED = If(USAGETYPE_POSITION(_DBType) <> 0, True, False)
+                        ASN_ENABLED = If(ASN_POSITION(_DBType) <> 0, True, False)
+                        AS_ENABLED = If(AS_POSITION(_DBType) <> 0, True, False)
+                        LASTSEEN_ENABLED = If(LASTSEEN_POSITION(_DBType) <> 0, True, False)
+                        THREAT_ENABLED = If(THREAT_POSITION(_DBType) <> 0, True, False)
+                    End Using
 
-                Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
-                    Dim Pointer As Integer = 0
+                    Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
+                        Dim Pointer As Integer = 0
 
-                    ' read IPv4 index
-                    For x As Integer = _IndexArrayIPv4.GetLowerBound(0) To _IndexArrayIPv4.GetUpperBound(0)
-                        _IndexArrayIPv4(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
-                        _IndexArrayIPv4(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
-                        Pointer += 8
-                    Next
-
-                    If _IndexBaseAddrIPv6 > 0 Then
-                        ' read IPv6 index
-                        For x As Integer = _IndexArrayIPv6.GetLowerBound(0) To _IndexArrayIPv6.GetUpperBound(0)
-                            _IndexArrayIPv6(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
-                            _IndexArrayIPv6(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
+                        ' read IPv4 index
+                        For x As Integer = _IndexArrayIPv4.GetLowerBound(0) To _IndexArrayIPv4.GetUpperBound(0)
+                            _IndexArrayIPv4(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
+                            _IndexArrayIPv4(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
                             Pointer += 8
                         Next
-                    End If
-                End Using
 
-                If _UseMemoryMappedFile Then
-                    CreateAccessors()
-                Else
-                    DestroyMemoryMappedFile()
+                        If _IndexBaseAddrIPv6 > 0 Then
+                            ' read IPv6 index
+                            For x As Integer = _IndexArrayIPv6.GetLowerBound(0) To _IndexArrayIPv6.GetUpperBound(0)
+                                _IndexArrayIPv6(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
+                                _IndexArrayIPv6(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
+                                Pointer += 8
+                            Next
+                        End If
+                    End Using
+
+                    If _UseMemoryMappedFile Then
+                        CreateAccessors()
+                    Else
+                        DestroyMemoryMappedFile()
+                    End If
+                    LoadOK = True
                 End If
-                LoadOK = True
             End If
         Catch Ex As Exception
             ErrLog(Ex.Message)
