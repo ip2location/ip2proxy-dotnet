@@ -11,7 +11,7 @@
     <Description>IP2Proxy .NET Component</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright 2020</Copyright>
-    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
     <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
     <PackageReleaseNotes>Added checking for null MemoryMappedFile object</PackageReleaseNotes>
