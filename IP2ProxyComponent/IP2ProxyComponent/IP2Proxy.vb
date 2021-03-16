@@ -29,26 +29,26 @@ End Structure
 Public Class Component
     Private _DBFilePath As String = ""
     Private _MMF As MemoryMappedFile = Nothing
-    Private _IndexArrayIPv4(65535, 1) As Integer
-    Private _IndexArrayIPv6(65535, 1) As Integer
+    Private ReadOnly _IndexArrayIPv4(65535, 1) As Integer
+    Private ReadOnly _IndexArrayIPv6(65535, 1) As Integer
     Private _IPv4Accessor As MemoryMappedViewAccessor = Nothing
     Private _IPv4Offset As Integer = 0
     Private _IPv6Accessor As MemoryMappedViewAccessor = Nothing
     Private _IPv6Offset As Integer = 0
     Private _MapDataAccessor As MemoryMappedViewAccessor = Nothing
     Private _MapDataOffset As Integer = 0
-    Private _OutlierCase1 As Regex = New Regex("^:(:[\dA-F]{1,4}){7}$", RegexOptions.IgnoreCase)
-    Private _OutlierCase2 As Regex = New Regex("^:(:[\dA-F]{1,4}){5}:(\d{1,3}\.){3}\d{1,3}$", RegexOptions.IgnoreCase)
-    Private _OutlierCase3 As Regex = New Regex("^\d+$")
-    Private _OutlierCase4 As Regex = New Regex("^([\dA-F]{1,4}:){6}(0\d+\.|.*?\.0\d+).*$")
-    Private _OutlierCase5 As Regex = New Regex("^(\d+\.){1,2}\d+$")
-    Private _IPv4MappedRegex As Regex = New Regex("^(.*:)((\d+\.){3}\d+)$")
-    Private _IPv4MappedRegex2 As Regex = New Regex("^.*((:[\dA-F]{1,4}){2})$")
-    Private _IPv4CompatibleRegex As Regex = New Regex("^::[\dA-F]{1,4}$", RegexOptions.IgnoreCase)
+    Private ReadOnly _OutlierCase1 As Regex = New Regex("^:(:[\dA-F]{1,4}){7}$", RegexOptions.IgnoreCase)
+    Private ReadOnly _OutlierCase2 As Regex = New Regex("^:(:[\dA-F]{1,4}){5}:(\d{1,3}\.){3}\d{1,3}$", RegexOptions.IgnoreCase)
+    Private ReadOnly _OutlierCase3 As Regex = New Regex("^\d+$")
+    Private ReadOnly _OutlierCase4 As Regex = New Regex("^([\dA-F]{1,4}:){6}(0\d+\.|.*?\.0\d+).*$")
+    Private ReadOnly _OutlierCase5 As Regex = New Regex("^(\d+\.){1,2}\d+$")
+    Private ReadOnly _IPv4MappedRegex As Regex = New Regex("^(.*:)((\d+\.){3}\d+)$")
+    Private ReadOnly _IPv4MappedRegex2 As Regex = New Regex("^.*((:[\dA-F]{1,4}){2})$")
+    Private ReadOnly _IPv4CompatibleRegex As Regex = New Regex("^::[\dA-F]{1,4}$", RegexOptions.IgnoreCase)
     Private _UseMemoryMappedFile As Boolean = False
     Private _IPv4ColumnSize As Integer = 0
     Private _IPv6ColumnSize As Integer = 0
-    Private _MapFileName As String = "MyProxyBIN" ' If running multiple websites with different application pools, every website must have different mapped file name
+    Private ReadOnly _MapFileName As String = "MyProxyBIN" ' If running multiple websites with different application pools, every website must have different mapped file name
 
     Private _BaseAddr As Integer = 0
     Private _DBCount As Integer = 0
@@ -99,17 +99,17 @@ Public Class Component
         ALL = 100
     End Enum
 
-    Private COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3}
-    Private REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4}
-    Private CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5}
-    Private ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6}
-    Private PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2}
-    Private DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7}
-    Private USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8}
-    Private ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9}
-    Private AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10}
-    Private LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11}
-    Private THREAT_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12}
+    Private ReadOnly COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+    Private ReadOnly REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4}
+    Private ReadOnly CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5}
+    Private ReadOnly ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6}
+    Private ReadOnly PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2}
+    Private ReadOnly DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7}
+    Private ReadOnly USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8}
+    Private ReadOnly ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9}
+    Private ReadOnly AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10}
+    Private ReadOnly LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11}
+    Private ReadOnly THREAT_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12}
 
     Private COUNTRY_POSITION_OFFSET As Integer = 0
     Private REGION_POSITION_OFFSET As Integer = 0
@@ -258,21 +258,17 @@ Public Class Component
                             Try
                                 _MMF = MemoryMappedFile.CreateFromFile(_DBFilePath, FileMode.Open, Nothing, New FileInfo(_DBFilePath).Length, MemoryMappedFileAccess.Read)
                             Catch ex5 As Exception
-                                Try
-                                    Dim len As Long = New FileInfo(_DBFilePath).Length
-                                    _MMF = MemoryMappedFile.CreateNew(Nothing, len, MemoryMappedFileAccess.ReadWrite)
-                                    Using stream As MemoryMappedViewStream = _MMF.CreateViewStream()
-                                        Using writer As BinaryWriter = New BinaryWriter(stream)
-                                            Using fs As FileStream = New FileStream(_DBFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-                                                Dim buff(len) As Byte
-                                                fs.Read(buff, 0, buff.Length)
-                                                writer.Write(buff, 0, buff.Length)
-                                            End Using
+                                Dim len As Long = New FileInfo(_DBFilePath).Length
+                                _MMF = MemoryMappedFile.CreateNew(Nothing, len, MemoryMappedFileAccess.ReadWrite)
+                                Using stream As MemoryMappedViewStream = _MMF.CreateViewStream()
+                                    Using writer As BinaryWriter = New BinaryWriter(stream)
+                                        Using fs As FileStream = New FileStream(_DBFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
+                                            Dim buff(len) As Byte
+                                            fs.Read(buff, 0, buff.Length)
+                                            writer.Write(buff, 0, buff.Length)
                                         End Using
                                     End Using
-                                Catch ex6 As Exception
-                                    ErrLog(ex6.Message & "---" & ex6.StackTrace)
-                                End Try
+                                End Using
                             End Try
                         End Try
                     End Try
@@ -283,7 +279,7 @@ Public Class Component
 
     ' Description: Destroy memory mapped file
     Private Sub DestroyMemoryMappedFile()
-        If Not _MMF Is Nothing Then
+        If _MMF IsNot Nothing Then
             _MMF.Dispose()
             _MMF = Nothing
         End If
@@ -314,17 +310,17 @@ Public Class Component
 
     ' Description: Destroy memory accessors
     Private Sub DestroyAccessors()
-        If Not _IPv4Accessor Is Nothing Then
+        If _IPv4Accessor IsNot Nothing Then
             _IPv4Accessor.Dispose()
             _IPv4Accessor = Nothing
         End If
 
-        If Not _IPv6Accessor Is Nothing Then
+        If _IPv6Accessor IsNot Nothing Then
             _IPv6Accessor.Dispose()
             _IPv6Accessor = Nothing
         End If
 
-        If Not _MapDataAccessor Is Nothing Then
+        If _MapDataAccessor IsNot Nothing Then
             _MapDataAccessor.Dispose()
             _MapDataAccessor = Nothing
         End If
@@ -333,98 +329,94 @@ Public Class Component
     ' Description: Read BIN file into memory mapped file and create accessors
     Private Function LoadBIN() As Boolean
         Dim LoadOK As Boolean = False
-        Try
-            If _DBFilePath <> "" Then
-                CreateMemoryMappedFile()
+        If _DBFilePath <> "" Then
+            CreateMemoryMappedFile()
 
-                If _MMF IsNot Nothing Then
-                    ' below use temp accessor as we only need once to read meta data (use this even when in filestream mode)
-                    Using _MetaAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(0, 64, MemoryMappedFileAccess.Read) ' 64 bytes header
-                        _DBType = _MetaAccessor.ReadByte(0)
-                        _DBColumn = _MetaAccessor.ReadByte(1)
-                        _DBYear = _MetaAccessor.ReadByte(2)
-                        _DBMonth = _MetaAccessor.ReadByte(3)
-                        _DBDay = _MetaAccessor.ReadByte(4)
-                        _DBCount = _MetaAccessor.ReadInt32(5) '4 bytes
-                        _BaseAddr = _MetaAccessor.ReadInt32(9) '4 bytes
-                        _DBCountIPv6 = _MetaAccessor.ReadInt32(13) '4 bytes
-                        _BaseAddrIPv6 = _MetaAccessor.ReadInt32(17) '4 bytes
-                        _IndexBaseAddr = _MetaAccessor.ReadInt32(21) '4 bytes
-                        _IndexBaseAddrIPv6 = _MetaAccessor.ReadInt32(25) '4 bytes
+            If _MMF IsNot Nothing Then
+                ' below use temp accessor as we only need once to read meta data (use this even when in filestream mode)
+                Using _MetaAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(0, 64, MemoryMappedFileAccess.Read) ' 64 bytes header
+                    _DBType = _MetaAccessor.ReadByte(0)
+                    _DBColumn = _MetaAccessor.ReadByte(1)
+                    _DBYear = _MetaAccessor.ReadByte(2)
+                    _DBMonth = _MetaAccessor.ReadByte(3)
+                    _DBDay = _MetaAccessor.ReadByte(4)
+                    _DBCount = _MetaAccessor.ReadInt32(5) '4 bytes
+                    _BaseAddr = _MetaAccessor.ReadInt32(9) '4 bytes
+                    _DBCountIPv6 = _MetaAccessor.ReadInt32(13) '4 bytes
+                    _BaseAddrIPv6 = _MetaAccessor.ReadInt32(17) '4 bytes
+                    _IndexBaseAddr = _MetaAccessor.ReadInt32(21) '4 bytes
+                    _IndexBaseAddrIPv6 = _MetaAccessor.ReadInt32(25) '4 bytes
 
-                        _IPv4ColumnSize = _DBColumn << 2 ' 4 bytes each column
-                        _IPv6ColumnSize = 16 + ((_DBColumn - 1) << 2) ' 4 bytes each column, except IPFrom column which is 16 bytes
+                    _IPv4ColumnSize = _DBColumn << 2 ' 4 bytes each column
+                    _IPv6ColumnSize = 16 + ((_DBColumn - 1) << 2) ' 4 bytes each column, except IPFrom column which is 16 bytes
 
-                        ' since both IPv4 and IPv6 use 4 bytes for the below columns, can just do it once here
-                        'COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 1) << 2, 0)
-                        'REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 1) << 2, 0)
-                        'CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 1) << 2, 0)
-                        'ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 1) << 2, 0)
-                        'PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 1) << 2, 0)
-                        'DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 1) << 2, 0)
-                        'USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 1) << 2, 0)
-                        'ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
-                        'AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
-                        'LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
-                        'THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 1) << 2, 0)
+                    ' since both IPv4 and IPv6 use 4 bytes for the below columns, can just do it once here
+                    'COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 1) << 2, 0)
+                    'REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 1) << 2, 0)
+                    'CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 1) << 2, 0)
+                    'ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 1) << 2, 0)
+                    'PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 1) << 2, 0)
+                    'DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 1) << 2, 0)
+                    'USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 1) << 2, 0)
+                    'ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 1) << 2, 0)
+                    'AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 1) << 2, 0)
+                    'LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 1) << 2, 0)
+                    'THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 1) << 2, 0)
 
-                        ' slightly different offset for reading by row
-                        COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 2) << 2, 0)
-                        REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 2) << 2, 0)
-                        CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 2) << 2, 0)
-                        ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 2) << 2, 0)
-                        PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 2) << 2, 0)
-                        DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 2) << 2, 0)
-                        USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 2) << 2, 0)
-                        ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 2) << 2, 0)
-                        AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 2) << 2, 0)
-                        LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
-                        THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
+                    ' slightly different offset for reading by row
+                    COUNTRY_POSITION_OFFSET = If(COUNTRY_POSITION(_DBType) <> 0, (COUNTRY_POSITION(_DBType) - 2) << 2, 0)
+                    REGION_POSITION_OFFSET = If(REGION_POSITION(_DBType) <> 0, (REGION_POSITION(_DBType) - 2) << 2, 0)
+                    CITY_POSITION_OFFSET = If(CITY_POSITION(_DBType) <> 0, (CITY_POSITION(_DBType) - 2) << 2, 0)
+                    ISP_POSITION_OFFSET = If(ISP_POSITION(_DBType) <> 0, (ISP_POSITION(_DBType) - 2) << 2, 0)
+                    PROXYTYPE_POSITION_OFFSET = If(PROXYTYPE_POSITION(_DBType) <> 0, (PROXYTYPE_POSITION(_DBType) - 2) << 2, 0)
+                    DOMAIN_POSITION_OFFSET = If(DOMAIN_POSITION(_DBType) <> 0, (DOMAIN_POSITION(_DBType) - 2) << 2, 0)
+                    USAGETYPE_POSITION_OFFSET = If(USAGETYPE_POSITION(_DBType) <> 0, (USAGETYPE_POSITION(_DBType) - 2) << 2, 0)
+                    ASN_POSITION_OFFSET = If(ASN_POSITION(_DBType) <> 0, (ASN_POSITION(_DBType) - 2) << 2, 0)
+                    AS_POSITION_OFFSET = If(AS_POSITION(_DBType) <> 0, (AS_POSITION(_DBType) - 2) << 2, 0)
+                    LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
+                    THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
 
-                        COUNTRY_ENABLED = If(COUNTRY_POSITION(_DBType) <> 0, True, False)
-                        REGION_ENABLED = If(REGION_POSITION(_DBType) <> 0, True, False)
-                        CITY_ENABLED = If(CITY_POSITION(_DBType) <> 0, True, False)
-                        ISP_ENABLED = If(ISP_POSITION(_DBType) <> 0, True, False)
-                        PROXYTYPE_ENABLED = If(PROXYTYPE_POSITION(_DBType) <> 0, True, False)
-                        DOMAIN_ENABLED = If(DOMAIN_POSITION(_DBType) <> 0, True, False)
-                        USAGETYPE_ENABLED = If(USAGETYPE_POSITION(_DBType) <> 0, True, False)
-                        ASN_ENABLED = If(ASN_POSITION(_DBType) <> 0, True, False)
-                        AS_ENABLED = If(AS_POSITION(_DBType) <> 0, True, False)
-                        LASTSEEN_ENABLED = If(LASTSEEN_POSITION(_DBType) <> 0, True, False)
-                        THREAT_ENABLED = If(THREAT_POSITION(_DBType) <> 0, True, False)
-                    End Using
+                    COUNTRY_ENABLED = COUNTRY_POSITION(_DBType) <> 0
+                    REGION_ENABLED = REGION_POSITION(_DBType) <> 0
+                    CITY_ENABLED = CITY_POSITION(_DBType) <> 0
+                    ISP_ENABLED = ISP_POSITION(_DBType) <> 0
+                    PROXYTYPE_ENABLED = PROXYTYPE_POSITION(_DBType) <> 0
+                    DOMAIN_ENABLED = DOMAIN_POSITION(_DBType) <> 0
+                    USAGETYPE_ENABLED = USAGETYPE_POSITION(_DBType) <> 0
+                    ASN_ENABLED = ASN_POSITION(_DBType) <> 0
+                    AS_ENABLED = AS_POSITION(_DBType) <> 0
+                    LASTSEEN_ENABLED = LASTSEEN_POSITION(_DBType) <> 0
+                    THREAT_ENABLED = THREAT_POSITION(_DBType) <> 0
+                End Using
 
-                    Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
-                        Dim Pointer As Integer = 0
+                Using _IndexAccessor As MemoryMappedViewAccessor = _MMF.CreateViewAccessor(_IndexBaseAddr - 1, _BaseAddr - _IndexBaseAddr, MemoryMappedFileAccess.Read) ' reading indexes
+                    Dim Pointer As Integer = 0
 
-                        ' read IPv4 index
-                        For x As Integer = _IndexArrayIPv4.GetLowerBound(0) To _IndexArrayIPv4.GetUpperBound(0)
-                            _IndexArrayIPv4(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
-                            _IndexArrayIPv4(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
+                    ' read IPv4 index
+                    For x As Integer = _IndexArrayIPv4.GetLowerBound(0) To _IndexArrayIPv4.GetUpperBound(0)
+                        _IndexArrayIPv4(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
+                        _IndexArrayIPv4(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
+                        Pointer += 8
+                    Next
+
+                    If _IndexBaseAddrIPv6 > 0 Then
+                        ' read IPv6 index
+                        For x As Integer = _IndexArrayIPv6.GetLowerBound(0) To _IndexArrayIPv6.GetUpperBound(0)
+                            _IndexArrayIPv6(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
+                            _IndexArrayIPv6(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
                             Pointer += 8
                         Next
-
-                        If _IndexBaseAddrIPv6 > 0 Then
-                            ' read IPv6 index
-                            For x As Integer = _IndexArrayIPv6.GetLowerBound(0) To _IndexArrayIPv6.GetUpperBound(0)
-                                _IndexArrayIPv6(x, 0) = _IndexAccessor.ReadInt32(Pointer) '4 bytes for from row
-                                _IndexArrayIPv6(x, 1) = _IndexAccessor.ReadInt32(Pointer + 4) '4 bytes for to row
-                                Pointer += 8
-                            Next
-                        End If
-                    End Using
-
-                    If _UseMemoryMappedFile Then
-                        CreateAccessors()
-                    Else
-                        DestroyMemoryMappedFile()
                     End If
-                    LoadOK = True
+                End Using
+
+                If _UseMemoryMappedFile Then
+                    CreateAccessors()
+                Else
+                    DestroyMemoryMappedFile()
                 End If
+                LoadOK = True
             End If
-        Catch Ex As Exception
-            ErrLog(Ex.Message)
-        End Try
+        End If
 
         Return LoadOK
     End Function
@@ -773,12 +765,9 @@ Public Class Component
                 .Threat = MSG_INVALID_IP
             End With
             Return Result
-        Catch ex As Exception
-            ErrLog(ex.Message)
-            Throw
         Finally
             Result = Nothing
-            If Not FS Is Nothing Then
+            If FS IsNot Nothing Then
                 FS.Close()
                 FS.Dispose()
             End If
@@ -810,94 +799,64 @@ Public Class Component
 
     ' Read 128 bits in the encrypted database
     Private Function Read128(ByVal _Pos As Long, ByRef MyAccessor As MemoryMappedViewAccessor, ByRef MyFilestream As FileStream) As BigInteger
-        Try
-            Dim BigRetVal As BigInteger = 0
+        Dim BigRetVal As BigInteger
 
-            If _UseMemoryMappedFile Then
-                BigRetVal = MyAccessor.ReadUInt64(_Pos + 8)
-                BigRetVal <<= 64
-                BigRetVal += MyAccessor.ReadUInt64(_Pos)
-            Else
-                Dim _Byte(15) As Byte ' 16 bytes
-                MyFilestream.Seek(_Pos - 1, SeekOrigin.Begin)
-                MyFilestream.Read(_Byte, 0, 16)
-                BigRetVal = System.BitConverter.ToUInt64(_Byte, 8)
-                BigRetVal <<= 64
-                BigRetVal += System.BitConverter.ToUInt64(_Byte, 0)
-            End If
+        If _UseMemoryMappedFile Then
+            BigRetVal = MyAccessor.ReadUInt64(_Pos + 8)
+            BigRetVal <<= 64
+            BigRetVal += MyAccessor.ReadUInt64(_Pos)
+        Else
+            Dim _Byte(15) As Byte ' 16 bytes
+            MyFilestream.Seek(_Pos - 1, SeekOrigin.Begin)
+            MyFilestream.Read(_Byte, 0, 16)
+            BigRetVal = System.BitConverter.ToUInt64(_Byte, 8)
+            BigRetVal <<= 64
+            BigRetVal += System.BitConverter.ToUInt64(_Byte, 0)
+        End If
 
-            Return BigRetVal
-        Catch Ex As Exception
-            Throw
-            'ErrLog("Read128-" & Ex.Message)
-        End Try
+        Return BigRetVal
     End Function
 
     ' Read 32 bits in byte array
     Private Function Read32_Row(ByRef Row() As Byte, ByVal ByteOffset As Integer) As BigInteger
-        Try
-            Dim _Byte(3) As Byte ' 4 bytes
-            Array.Copy(Row, ByteOffset, _Byte, 0, 4)
-
-            Return System.BitConverter.ToUInt32(_Byte, 0)
-        Catch ex As Exception
-            Throw
-            'ErrLog("Read32_Row-" & ex.Message)
-        End Try
+        Dim _Byte(3) As Byte ' 4 bytes
+        Array.Copy(Row, ByteOffset, _Byte, 0, 4)
+        Return System.BitConverter.ToUInt32(_Byte, 0)
     End Function
 
     ' Read 32 bits in the encrypted database
     Private Function Read32(ByVal _Pos As Long, ByRef MyAccessor As MemoryMappedViewAccessor, ByRef MyFilestream As FileStream) As BigInteger
-        Try
-            If _UseMemoryMappedFile Then
-                Return MyAccessor.ReadUInt32(_Pos)
-            Else
-                Dim _Byte(3) As Byte ' 4 bytes
-                MyFilestream.Seek(_Pos - 1, SeekOrigin.Begin)
-                MyFilestream.Read(_Byte, 0, 4)
+        If _UseMemoryMappedFile Then
+            Return MyAccessor.ReadUInt32(_Pos)
+        Else
+            Dim _Byte(3) As Byte ' 4 bytes
+            MyFilestream.Seek(_Pos - 1, SeekOrigin.Begin)
+            MyFilestream.Read(_Byte, 0, 4)
 
-                Return System.BitConverter.ToUInt32(_Byte, 0)
-            End If
-        Catch Ex As Exception
-            Throw
-            'ErrLog("Read32-" & Ex.Message)
-        End Try
+            Return System.BitConverter.ToUInt32(_Byte, 0)
+        End If
     End Function
 
     ' Read strings in the encrypted database
     Private Function ReadStr(ByVal _Pos As Long, ByRef Myfilestream As FileStream) As String
-        Try
-            If _UseMemoryMappedFile Then
-                Dim _Byte1 As Byte
-                Dim _Bytes() As Byte
-                _Pos -= _MapDataOffset
-                _Byte1 = _MapDataAccessor.ReadByte(_Pos)
-                ReDim _Bytes(_Byte1 - 1)
-                _MapDataAccessor.ReadArray(_Pos + 1, _Bytes, 0, _Byte1)
-                Return System.Text.Encoding.Default.GetString(_Bytes)
-            Else
-                Dim _Bytes(0) As Byte
-                Dim _Bytes2() As Byte
-                Myfilestream.Seek(_Pos, SeekOrigin.Begin)
-                Myfilestream.Read(_Bytes, 0, 1)
-                ReDim _Bytes2(_Bytes(0) - 1)
-                Myfilestream.Read(_Bytes2, 0, _Bytes(0))
-                Return System.Text.Encoding.Default.GetString(_Bytes2)
-            End If
-        Catch Ex As Exception
-            Throw
-            'ErrLog("ReadStr-" & Ex.Message)
-        End Try
+        If _UseMemoryMappedFile Then
+            Dim _Byte1 As Byte
+            Dim _Bytes() As Byte
+            _Pos -= _MapDataOffset
+            _Byte1 = _MapDataAccessor.ReadByte(_Pos)
+            ReDim _Bytes(_Byte1 - 1)
+            _MapDataAccessor.ReadArray(_Pos + 1, _Bytes, 0, _Byte1)
+            Return System.Text.Encoding.Default.GetString(_Bytes)
+        Else
+            Dim _Bytes(0) As Byte
+            Dim _Bytes2() As Byte
+            Myfilestream.Seek(_Pos, SeekOrigin.Begin)
+            Myfilestream.Read(_Bytes, 0, 1)
+            ReDim _Bytes2(_Bytes(0) - 1)
+            Myfilestream.Read(_Bytes2, 0, _Bytes(0))
+            Return System.Text.Encoding.Default.GetString(_Bytes2)
+        End If
     End Function
-
-    ' Description: Write any errors to log
-    Private Sub ErrLog(ByVal StrMessage As String)
-        Dim FS As FileStream = New FileStream(System.AppDomain.CurrentDomain.BaseDirectory & "ip2proxy_errLog.txt", FileMode.Append)
-        Dim ObjWriter As StreamWriter = New StreamWriter(FS)
-        ObjWriter.WriteLine(DateTime.Now() & "," & StrMessage)
-        ObjWriter.Close()
-        FS.Close()
-    End Sub
 
     ' Description: Initialize
     Public Sub New()
