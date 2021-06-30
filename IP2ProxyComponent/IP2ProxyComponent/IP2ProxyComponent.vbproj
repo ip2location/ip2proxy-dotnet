@@ -4,7 +4,7 @@
     <RootNamespace>IP2Proxy</RootNamespace>
     <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <AssemblyName>IP2Proxy</AssemblyName>
-    <Version>3.0.3</Version>
+    <Version>3.1.0</Version>
     <Authors>IP2Proxy.com</Authors>
     <Company>IP2Proxy.com</Company>
     <Product>IP2Proxy .NET Component</Product>
@@ -15,7 +15,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
     <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
-    <PackageReleaseNotes>Removed logging.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added provider field and exception handling for incorrect BIN database.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ip2location/ip2proxy-dotnet.git</RepositoryUrl>
     <PackageTags>ip2proxy proxy detection</PackageTags>
     <RepositoryType>git</RepositoryType>

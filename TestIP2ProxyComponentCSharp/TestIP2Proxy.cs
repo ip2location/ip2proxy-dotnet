@@ -20,10 +20,11 @@
             string @as;
             string lastseen;
             string threat;
+            string provider;
 
             string ip = "221.121.146.0";
 
-            if (proxy.Open("C:\\data\\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) == 0)
+            if (proxy.Open("C:\\data\\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) == 0)
             {
                 System.Console.WriteLine("GetModuleVersion: " + proxy.GetModuleVersion());
                 System.Console.WriteLine("GetPackageVersion: " + proxy.GetPackageVersion());
@@ -44,6 +45,7 @@
                 System.Console.WriteLine("AS: " + all.AS);
                 System.Console.WriteLine("Last_Seen: " + all.Last_Seen);
                 System.Console.WriteLine("Threat: " + all.Threat);
+                System.Console.WriteLine("Provider: " + all.Provider);
 
                 // reading individual fields
                 isproxy = proxy.IsProxy(ip);
@@ -84,6 +86,9 @@
 
                 threat = proxy.GetThreat(ip);
                 System.Console.WriteLine("Threat: " + threat);
+
+                provider = proxy.GetProvider(ip);
+                System.Console.WriteLine("Provider: " + provider);
             }
             else
             {

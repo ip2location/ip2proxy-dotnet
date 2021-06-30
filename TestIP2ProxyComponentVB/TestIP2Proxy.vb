@@ -19,10 +19,11 @@ Module TestIP2Proxy
         Dim [as] As String
         Dim lastseen As String
         Dim threat As String
+        Dim provider As String
 
         Dim ip As String = "46.101.133.66"
 
-        If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
+        If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
             Console.WriteLine("GetModuleVersion: " & proxy.GetModuleVersion())
             Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
             Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
@@ -42,6 +43,7 @@ Module TestIP2Proxy
             Console.WriteLine("AS: " & all.AS)
             Console.WriteLine("Last_Seen: " & all.Last_Seen)
             Console.WriteLine("Threat: " & all.Threat)
+            Console.WriteLine("Provider: " & all.Provider)
 
             ' reading individual fields
             isproxy = proxy.IsProxy(ip)
@@ -82,6 +84,9 @@ Module TestIP2Proxy
 
             threat = proxy.GetThreat(ip)
             Console.WriteLine("Threat: " & threat)
+
+            provider = proxy.GetProvider(ip)
+            Console.WriteLine("Provider: " & provider)
         Else
             Console.WriteLine("Error reading BIN file.")
         End If

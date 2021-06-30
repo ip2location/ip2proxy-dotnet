@@ -34,6 +34,7 @@ Below are the methods supported in this class.
 |GetAS|Return the autonomous system name of the proxy.|
 |GetLastSeen|Return the number of days that the proxy was last seen.|
 |GetThreat|Return the threat type of the proxy.|
+|GetProvider|Return the provider of the proxy.|
 
 ## Usage
 
@@ -59,10 +60,11 @@ Dim asn As String
 Dim [as] As String
 Dim lastseen As String
 Dim threat As String
+Dim provider As String
 
 Dim ip As String = "221.121.146.0"
 
-If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
+If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
 	Console.WriteLine("GetModuleVersion: " & proxy.GetModuleVersion())
 	Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
 	Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
@@ -82,6 +84,7 @@ If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAG
 	Console.WriteLine("AS: " & all.AS)
 	Console.WriteLine("Last_Seen: " & all.Last_Seen)
 	Console.WriteLine("Threat: " & all.Threat)
+	Console.WriteLine("Provider: " & all.Provider)
 
 	' reading individual fields
 	isproxy = proxy.IsProxy(ip)
@@ -122,6 +125,9 @@ If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAG
 
 	threat = proxy.GetThreat(ip)
 	Console.WriteLine("Threat: " & threat)
+
+	provider = proxy.GetProvider(ip)
+	Console.WriteLine("Provider: " & provider)
 Else
 	Console.WriteLine("Error reading BIN file.")
 End If
