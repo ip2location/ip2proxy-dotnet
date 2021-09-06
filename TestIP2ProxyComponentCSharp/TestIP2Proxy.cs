@@ -1,9 +1,13 @@
-﻿namespace TestIP2ProxyComponent
+﻿using System;
+using Newtonsoft.Json.Linq;
+
+namespace TestIP2ProxyComponent
 {
     class TestIP2Proxy
     {
         static void Main(string[] args)
         {
+            // Query using BIN file
             IP2Proxy.Component proxy = new IP2Proxy.Component();
             IP2Proxy.ProxyResult all;
 
@@ -26,75 +30,115 @@
 
             if (proxy.Open("C:\\data\\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) == 0)
             {
-                System.Console.WriteLine("GetModuleVersion: " + proxy.GetModuleVersion());
-                System.Console.WriteLine("GetPackageVersion: " + proxy.GetPackageVersion());
-                System.Console.WriteLine("GetDatabaseVersion: " + proxy.GetDatabaseVersion());
+                Console.WriteLine("GetModuleVersion: " + proxy.GetModuleVersion());
+                Console.WriteLine("GetPackageVersion: " + proxy.GetPackageVersion());
+                Console.WriteLine("GetDatabaseVersion: " + proxy.GetDatabaseVersion());
 
                 // reading all available fields
                 all = proxy.GetAll(ip);
-                System.Console.WriteLine("Is_Proxy: " + all.Is_Proxy.ToString());
-                System.Console.WriteLine("Proxy_Type: " + all.Proxy_Type);
-                System.Console.WriteLine("Country_Short: " + all.Country_Short);
-                System.Console.WriteLine("Country_Long: " + all.Country_Long);
-                System.Console.WriteLine("Region: " + all.Region);
-                System.Console.WriteLine("City: " + all.City);
-                System.Console.WriteLine("ISP: " + all.ISP);
-                System.Console.WriteLine("Domain: " + all.Domain);
-                System.Console.WriteLine("Usage_Type: " + all.Usage_Type);
-                System.Console.WriteLine("ASN: " + all.ASN);
-                System.Console.WriteLine("AS: " + all.AS);
-                System.Console.WriteLine("Last_Seen: " + all.Last_Seen);
-                System.Console.WriteLine("Threat: " + all.Threat);
-                System.Console.WriteLine("Provider: " + all.Provider);
+                Console.WriteLine("Is_Proxy: " + all.Is_Proxy.ToString());
+                Console.WriteLine("Proxy_Type: " + all.Proxy_Type);
+                Console.WriteLine("Country_Short: " + all.Country_Short);
+                Console.WriteLine("Country_Long: " + all.Country_Long);
+                Console.WriteLine("Region: " + all.Region);
+                Console.WriteLine("City: " + all.City);
+                Console.WriteLine("ISP: " + all.ISP);
+                Console.WriteLine("Domain: " + all.Domain);
+                Console.WriteLine("Usage_Type: " + all.Usage_Type);
+                Console.WriteLine("ASN: " + all.ASN);
+                Console.WriteLine("AS: " + all.AS);
+                Console.WriteLine("Last_Seen: " + all.Last_Seen);
+                Console.WriteLine("Threat: " + all.Threat);
+                Console.WriteLine("Provider: " + all.Provider);
 
                 // reading individual fields
                 isproxy = proxy.IsProxy(ip);
-                System.Console.WriteLine("Is_Proxy: " + isproxy.ToString());
+                Console.WriteLine("Is_Proxy: " + isproxy.ToString());
 
                 proxytype = proxy.GetProxyType(ip);
-                System.Console.WriteLine("Proxy_Type: " + proxytype);
+                Console.WriteLine("Proxy_Type: " + proxytype);
 
                 countryshort = proxy.GetCountryShort(ip);
-                System.Console.WriteLine("Country_Short: " + countryshort);
+                Console.WriteLine("Country_Short: " + countryshort);
 
                 countrylong = proxy.GetCountryLong(ip);
-                System.Console.WriteLine("Country_Long: " + countrylong);
+                Console.WriteLine("Country_Long: " + countrylong);
 
                 region = proxy.GetRegion(ip);
-                System.Console.WriteLine("Region: " + region);
+                Console.WriteLine("Region: " + region);
 
                 city = proxy.GetCity(ip);
-                System.Console.WriteLine("City: " + city);
+                Console.WriteLine("City: " + city);
 
                 isp = proxy.GetISP(ip);
-                System.Console.WriteLine("ISP: " + isp);
+                Console.WriteLine("ISP: " + isp);
 
                 domain = proxy.GetDomain(ip);
-                System.Console.WriteLine("Domain: " + domain);
+                Console.WriteLine("Domain: " + domain);
 
                 usagetype= proxy.GetUsageType(ip);
-                System.Console.WriteLine("Usage_Type: " + usagetype);
+                Console.WriteLine("Usage_Type: " + usagetype);
 
                 asn = proxy.GetASN(ip);
-                System.Console.WriteLine("ASN: " + asn);
+                Console.WriteLine("ASN: " + asn);
 
                 @as = proxy.GetAS(ip);
-                System.Console.WriteLine("AS: " + @as);
+                Console.WriteLine("AS: " + @as);
 
                 lastseen = proxy.GetLastSeen(ip);
-                System.Console.WriteLine("Last_Seen: " + lastseen);
+                Console.WriteLine("Last_Seen: " + lastseen);
 
                 threat = proxy.GetThreat(ip);
-                System.Console.WriteLine("Threat: " + threat);
+                Console.WriteLine("Threat: " + threat);
 
                 provider = proxy.GetProvider(ip);
-                System.Console.WriteLine("Provider: " + provider);
+                Console.WriteLine("Provider: " + provider);
             }
             else
             {
-                System.Console.WriteLine("Error reading BIN file.");
+                Console.WriteLine("Error reading BIN file.");
             }
             proxy.Close();
+            
+            // Query using web service
+            IP2Proxy.ComponentWebService proxyws = new IP2Proxy.ComponentWebService();
+            string apikey = "YOUR_API_KEY";
+            string package = "PX11";
+            bool ssl = true;
+
+            proxyws.Open(apikey, package, ssl);
+            JObject myresult = proxyws.IPQuery(ip);
+
+            if (myresult["response"] != null)
+            {
+                if (myresult["response"].ToString() != "OK")
+                {
+                    Console.WriteLine("Error: " + myresult["response"]);
+                }
+                else
+                {
+                    Console.WriteLine("countryCode: " + (myresult["countryCode"] ?? ""));
+                    Console.WriteLine("countryName: " + (myresult["countryName"] ?? ""));
+                    Console.WriteLine("regionName: " + (myresult["regionName"] ?? ""));
+                    Console.WriteLine("cityName: " + (myresult["cityName"] ?? ""));
+                    Console.WriteLine("isp: " + (myresult["isp"] ?? ""));
+                    Console.WriteLine("domain: " + (myresult["domain"] ?? ""));
+                    Console.WriteLine("usageType: " + (myresult["usageType"] ?? ""));
+                    Console.WriteLine("asn: " + (myresult["asn"] ?? ""));
+                    Console.WriteLine("as: " + (myresult["as"] ?? ""));
+                    Console.WriteLine("lastSeen: " + (myresult["lastSeen"] ?? ""));
+                    Console.WriteLine("proxyType: " + (myresult["proxyType"] ?? ""));
+                    Console.WriteLine("threat: " + (myresult["threat"] ?? ""));
+                    Console.WriteLine("isProxy: " + (myresult["isProxy"] ?? ""));
+                    Console.WriteLine("provider: " + (myresult["provider"] ?? ""));
+                }
+            }
+
+            myresult = proxyws.GetCredit();
+            if (myresult["response"] != null)
+            {
+                Console.WriteLine("Credit balance: " + (myresult["response"] ?? ""));
+            }
 
         }
     }

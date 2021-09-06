@@ -3,6 +3,7 @@
 Module TestIP2Proxy
 
     Sub Main()
+        ' Query using BIN file
         Dim proxy As New IP2Proxy.Component
         Dim all As IP2Proxy.ProxyResult
 
@@ -92,6 +93,40 @@ Module TestIP2Proxy
         End If
         proxy.Close()
 
+        ' Query using BIN file
+        Dim proxyws As New IP2Proxy.ComponentWebService()
+        Dim apikey = "YOUR_API_KEY"
+        Dim package = "PX11"
+        Dim ssl = True
+
+        proxyws.Open(apikey, package, ssl)
+        Dim myresult = proxyws.IPQuery(ip)
+
+        If myresult.ContainsKey("response") Then
+            If myresult("response").ToString <> "OK" Then
+                Console.WriteLine("Error: " & myresult("response").ToString)
+            Else
+                Console.WriteLine("countryCode: " & If(myresult.ContainsKey("countryCode"), myresult("countryCode").ToString, ""))
+                Console.WriteLine("countryName: " & If(myresult.ContainsKey("countryName"), myresult("countryName").ToString, ""))
+                Console.WriteLine("regionName: " & If(myresult.ContainsKey("regionName"), myresult("regionName").ToString, ""))
+                Console.WriteLine("cityName: " & If(myresult.ContainsKey("cityName"), myresult("cityName").ToString, ""))
+                Console.WriteLine("isp: " & If(myresult.ContainsKey("isp"), myresult("isp").ToString, ""))
+                Console.WriteLine("domain: " & If(myresult.ContainsKey("domain"), myresult("domain").ToString, ""))
+                Console.WriteLine("usageType: " & If(myresult.ContainsKey("usageType"), myresult("usageType").ToString, ""))
+                Console.WriteLine("asn: " & If(myresult.ContainsKey("asn"), myresult("asn").ToString, ""))
+                Console.WriteLine("as: " & If(myresult.ContainsKey("as"), myresult("as").ToString, ""))
+                Console.WriteLine("lastSeen: " & If(myresult.ContainsKey("lastSeen"), myresult("lastSeen").ToString, ""))
+                Console.WriteLine("proxyType: " & If(myresult.ContainsKey("proxyType"), myresult("proxyType").ToString, ""))
+                Console.WriteLine("threat: " & If(myresult.ContainsKey("threat"), myresult("threat").ToString, ""))
+                Console.WriteLine("isProxy: " & If(myresult.ContainsKey("isProxy"), myresult("isProxy").ToString, ""))
+                Console.WriteLine("provider: " & If(myresult.ContainsKey("provider"), myresult("provider").ToString, ""))
+            End If
+        End If
+
+        myresult = proxyws.GetCredit()
+        If myresult.ContainsKey("response") Then
+            Console.WriteLine("Credit balance: " & If(myresult.ContainsKey("response"), myresult("response").ToString, ""))
+        End If
 
     End Sub
 

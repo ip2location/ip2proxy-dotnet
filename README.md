@@ -5,10 +5,16 @@ This component allows user to query an IP address if it was being used as VPN an
 * Free IP2Proxy BIN Data: https://lite.ip2location.com
 * Commercial IP2Proxy BIN Data: https://www.ip2location.com/database/ip2proxy
 
+As an alternative, this component can also call the IP2Proxy Web Service. This requires an API key. If you don't have an existing API key, you can subscribe for one at the below:
+
+https://www.ip2location.com/web-service/ip2proxy
+
 ## Requirements
 
 Microsoft .NET 4.72 framework or later.
 Compatible with .NET Core 2.x/3.x SDK.
+
+## QUERY USING THE BIN FILE
 
 ## Methods
 Below are the methods supported in this class.
@@ -134,3 +140,98 @@ End If
 proxy.Close()
 
 ```
+
+## QUERY USING THE IP2PROXY PROXY DETECTION WEB SERVICE
+
+## Methods
+Below are the methods supported in this class.
+
+|Method Name|Description|
+|---|---|
+|Open(ByVal APIKey As String, ByVal Package As String, ByVal Optional UseSSL As Boolean = True)| Expects 2 or 3 input parameters:<ol><li>IP2Proxy API Key.</li><li>Package (PX1 - PX11)</li></li><li>Use HTTPS or HTTP</li></ol> |
+|IPQuery(ByVal IP As String)|Query IP address. This method returns a JObject containing the proxy info. <ul><li>countryCode</li><li>countryName</li><li>regionName</li><li>cityName</li><li>isp</li><li>domain</li><li>usageType</li><li>asn</li><li>as</li><li>lastSeen</li><li>threat</li><li>proxyType</li><li>isProxy</li><li>provider</li><ul>|
+|GetCredit()|This method returns the web service credit balance in a JObject.|
+
+## Usage
+
+```vb.net
+Imports System.IO
+
+Module TestIP2Proxy
+
+    Sub Main()
+        Dim proxyws As New IP2Proxy.ComponentWebService()
+        Dim ip = "221.121.146.0"
+        Dim apikey = "YOUR_API_KEY"
+        Dim package = "PX11"
+        Dim ssl = True
+
+        proxyws.Open(apikey, package, ssl)
+        Dim myresult = proxyws.IPQuery(ip)
+
+        If myresult.ContainsKey("response") Then
+            If myresult("response").ToString <> "OK" Then
+                Console.WriteLine("Error: " & myresult("response").ToString)
+            Else
+                Console.WriteLine("countryCode: " & If(myresult.ContainsKey("countryCode"), myresult("countryCode").ToString, ""))
+                Console.WriteLine("countryName: " & If(myresult.ContainsKey("countryName"), myresult("countryName").ToString, ""))
+                Console.WriteLine("regionName: " & If(myresult.ContainsKey("regionName"), myresult("regionName").ToString, ""))
+                Console.WriteLine("cityName: " & If(myresult.ContainsKey("cityName"), myresult("cityName").ToString, ""))
+                Console.WriteLine("isp: " & If(myresult.ContainsKey("isp"), myresult("isp").ToString, ""))
+                Console.WriteLine("domain: " & If(myresult.ContainsKey("domain"), myresult("domain").ToString, ""))
+                Console.WriteLine("usageType: " & If(myresult.ContainsKey("usageType"), myresult("usageType").ToString, ""))
+                Console.WriteLine("asn: " & If(myresult.ContainsKey("asn"), myresult("asn").ToString, ""))
+                Console.WriteLine("as: " & If(myresult.ContainsKey("as"), myresult("as").ToString, ""))
+                Console.WriteLine("lastSeen: " & If(myresult.ContainsKey("lastSeen"), myresult("lastSeen").ToString, ""))
+                Console.WriteLine("proxyType: " & If(myresult.ContainsKey("proxyType"), myresult("proxyType").ToString, ""))
+                Console.WriteLine("threat: " & If(myresult.ContainsKey("threat"), myresult("threat").ToString, ""))
+                Console.WriteLine("isProxy: " & If(myresult.ContainsKey("isProxy"), myresult("isProxy").ToString, ""))
+                Console.WriteLine("provider: " & If(myresult.ContainsKey("provider"), myresult("provider").ToString, ""))
+            End If
+        End If
+
+        myresult = proxyws.GetCredit()
+        If myresult.ContainsKey("response") Then
+            Console.WriteLine("Credit balance: " & If(myresult.ContainsKey("response"), myresult("response").ToString, ""))
+        End If
+    End Sub
+
+End Module
+```
+
+### Proxy Type
+
+|Proxy Type|Description|
+|---|---|
+|VPN|Anonymizing VPN services|
+|TOR|Tor Exit Nodes|
+|PUB|Public Proxies|
+|WEB|Web Proxies|
+|DCH|Hosting Providers/Data Center|
+|SES|Search Engine Robots|
+|RES|Residential Proxies [PX10+]|
+
+### Usage Type
+
+|Usage Type|Description|
+|---|---|
+|COM|Commercial|
+|ORG|Organization|
+|GOV|Government|
+|MIL|Military|
+|EDU|University/College/School|
+|LIB|Library|
+|CDN|Content Delivery Network|
+|ISP|Fixed Line ISP|
+|MOB|Mobile ISP|
+|DCH|Data Center/Web Hosting/Transit|
+|SES|Search Engine Spider|
+|RSV|Reserved|
+
+### Threat Type
+
+|Threat Type|Description|
+|---|---|
+|SPAM|Spammer|
+|SCANNER|Security Scanner or Attack|
+|BOTNET|Spyware or Malware|
