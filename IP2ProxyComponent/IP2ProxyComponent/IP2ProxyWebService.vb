@@ -34,7 +34,7 @@ Public NotInheritable Class ComponentWebService
         End If
     End Sub
 
-    ' Description: Query web service to get location information by IP address
+    ' Description: Query web service to get proxy information by IP address
     Public Function IPQuery(ByVal IP As String) As JObject
         CheckParams() ' check here in case user haven't called Open yet
 
