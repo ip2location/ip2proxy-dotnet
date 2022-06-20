@@ -16,6 +16,7 @@ Public Class Http
             Return ("Failed : HTTP error code :" & response.StatusCode)
         End If
     End Function
+
     Public Function PostMethod(ByVal url As String, post As String) As String
         Dim request As HttpWebRequest
         Dim response As HttpWebResponse
