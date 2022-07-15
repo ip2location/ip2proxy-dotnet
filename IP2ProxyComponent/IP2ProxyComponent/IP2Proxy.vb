@@ -816,7 +816,7 @@ Public Class Component
     End Function
 
     Private Function Read32Or128Row(ByRef Row() As Byte, ByVal ByteOffset As Integer, ByVal Len As Integer) As BigInteger
-        Dim _Byte(Len - 1) As Byte
+        Dim _Byte(Len) As Byte ' extra 1 zero byte at the end is for making the BigInteger unsigned
         Array.Copy(Row, ByteOffset, _Byte, 0, Len)
         Return New BigInteger(_Byte)
     End Function
