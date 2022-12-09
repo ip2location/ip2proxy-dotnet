@@ -4,7 +4,7 @@
     <RootNamespace>IP2Proxy</RootNamespace>
     <TargetFrameworks>netstandard2.0;net472;net48;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>IP2Proxy</AssemblyName>
-    <Version>3.3.2</Version>
+    <Version>3.3.3</Version>
     <Authors>IP2Proxy.com</Authors>
     <Company>IP2Proxy.com</Company>
     <Product>IP2Proxy .NET Component</Product>
@@ -15,13 +15,18 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
     <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
-    <PackageReleaseNotes>Updated target frameworks.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated Newtonsoft.Json version</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ip2location/ip2proxy-dotnet.git</RepositoryUrl>
     <PackageTags>ip2proxy proxy detection</PackageTags>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="ip2proxy-logo-square-128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
