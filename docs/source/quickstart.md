@@ -16,13 +16,16 @@ This library requires IP2Proxy BIN database to function. You may download the BI
 
 ## Sample Codes
 
-### Query geolocation information from BIN database
+### Query proxy information from BIN database
 
-You can query the geolocation information from the IP2Proxy BIN database as below:
+You can query the proxy information from the IP2Proxy BIN database as below:
 
 ```vb.net
-Dim proxy As New IP2Proxy.Component
-Dim all As IP2Proxy.ProxyResult
+Imports System.IO
+Imports IP2Proxy
+
+Dim proxy As New Component
+Dim all As ProxyResult
 
 Dim isproxy As Integer
 Dim proxytype As String
@@ -41,8 +44,8 @@ Dim provider As String
 
 Dim ip As String = "221.121.146.0"
 
-If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", IP2Proxy.Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
-	Console.WriteLine("GetModuleVersion: " & proxy.GetModuleVersion())
+If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
+	Console.WriteLine("GetModuleVersion: " & Component.GetModuleVersion())
 	Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
 	Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
 
@@ -109,4 +112,104 @@ Else
 	Console.WriteLine("Error reading BIN file.")
 End If
 proxy.Close()
+```
+
+### Query proxy information using a stream and async IP query
+
+You can query the proxy information using a stream and async IP query as below:
+
+```vb.net
+Imports System.IO
+Imports IP2Proxy
+
+Dim proxy As New Component
+Dim all As ProxyResult
+
+Dim isproxy As Integer
+Dim proxytype As String
+Dim countryshort As String
+Dim countrylong As String
+Dim region As String
+Dim city As String
+Dim isp As String
+Dim domain As String
+Dim usagetype As String
+Dim asn As String
+Dim [as] As String
+Dim lastseen As String
+Dim threat As String
+Dim provider As String
+
+Dim ip As String = "221.121.146.0"
+
+Using myStream = New FileStream("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", FileMode.Open, FileAccess.Read, FileShare.Read)
+	If proxy.Open(myStream) = 0 Then
+		Console.WriteLine("GetModuleVersion: " & Component.GetModuleVersion())
+		Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
+		Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
+
+		' reading all available fields
+		all = proxy.GetAllAsync(ip)
+		Console.WriteLine("Is_Proxy: " & all.Is_Proxy.ToString())
+		Console.WriteLine("Proxy_Type: " & all.Proxy_Type)
+		Console.WriteLine("Country_Short: " & all.Country_Short)
+		Console.WriteLine("Country_Long: " & all.Country_Long)
+		Console.WriteLine("Region: " & all.Region)
+		Console.WriteLine("City: " & all.City)
+		Console.WriteLine("ISP: " & all.ISP)
+		Console.WriteLine("Domain: " & all.Domain)
+		Console.WriteLine("Usage_Type: " & all.Usage_Type)
+		Console.WriteLine("ASN: " & all.ASN)
+		Console.WriteLine("AS: " & all.AS)
+		Console.WriteLine("Last_Seen: " & all.Last_Seen)
+		Console.WriteLine("Threat: " & all.Threat)
+		Console.WriteLine("Provider: " & all.Provider)
+
+		' reading individual fields
+		isproxy = proxy.IsProxyAsync(ip)
+		Console.WriteLine("Is_Proxy: " & isproxy.ToString())
+
+		proxytype = proxy.GetProxyTypeAsync(ip)
+		Console.WriteLine("Proxy_Type: " & proxytype)
+
+		countryshort = proxy.GetCountryShortAsync(ip)
+		Console.WriteLine("Country_Short: " & countryshort)
+
+		countrylong = proxy.GetCountryLongAsync(ip)
+		Console.WriteLine("Country_Long: " & countrylong)
+
+		region = proxy.GetRegionAsync(ip)
+		Console.WriteLine("Region: " & region)
+
+		city = proxy.GetCityAsync(ip)
+		Console.WriteLine("City: " & city)
+
+		isp = proxy.GetISPAsync(ip)
+		Console.WriteLine("ISP: " & isp)
+
+		domain = proxy.GetDomainAsync(ip)
+		Console.WriteLine("Domain: " & domain)
+
+		usagetype = proxy.GetUsageTypeAsync(ip)
+		Console.WriteLine("Usage_Type: " & usagetype)
+
+		asn = proxy.GetASNAsync(ip)
+		Console.WriteLine("ASN: " & asn)
+
+		[as] = proxy.GetASAsync(ip)
+		Console.WriteLine("AS: " & [as])
+
+		lastseen = proxy.GetLastSeenAsync(ip)
+		Console.WriteLine("Last_Seen: " & lastseen)
+
+		threat = proxy.GetThreatAsync(ip)
+		Console.WriteLine("Threat: " & threat)
+
+		provider = proxy.GetProviderAsync(ip)
+		Console.WriteLine("Provider: " & provider)
+	Else
+		Console.WriteLine("Error reading BIN file.")
+	End If
+	proxy.Close()
+End Using
 ```
