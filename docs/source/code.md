@@ -12,7 +12,7 @@ Close and clean up the file pointer.
 ```
 
 ```{py:function} GetPackageVersion()
-Return the database's type, 1 to 10 respectively for PX1 to PX11. Please visit https://www.ip2location.com/databases/ip2proxy for details.
+Return the database's type, 1 to 11 respectively for PX1 to PX11. Please visit https://www.ip2location.com/databases/ip2proxy for details.
 
 :return: Returns the package version.
 :rtype: String
