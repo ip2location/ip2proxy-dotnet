@@ -4,18 +4,18 @@
     <RootNamespace>IP2Proxy</RootNamespace>
     <TargetFrameworks>netstandard2.0;net472;net48;net481;net5.0;net6.0;net7.0</TargetFrameworks>
     <AssemblyName>IP2Proxy</AssemblyName>
-    <Version>3.3.4</Version>
+    <Version>4.0.0</Version>
     <Authors>IP2Proxy.com</Authors>
     <Company>IP2Proxy.com</Company>
     <Product>IP2Proxy .NET Component</Product>
     <Title>IP2Proxy .NET Component</Title>
     <Description>IP2Proxy .NET Component</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Copyright 2023</Copyright>
+    <Copyright>Copyright 2024</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
     <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
-    <PackageReleaseNotes>Updated target frameworks</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for reading from stream and added async IP query</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ip2location/ip2proxy-dotnet.git</RepositoryUrl>
     <PackageTags>ip2proxy proxy detection</PackageTags>
     <RepositoryType>git</RepositoryType>

@@ -15,7 +15,7 @@ Public NotInheritable Class ComponentWebService
     End Sub
 
     ' Description: Set the API key and package for the queries
-    Public Sub Open(ByVal APIKey As String, ByVal Package As String, ByVal Optional UseSSL As Boolean = True)
+    Public Sub Open(APIKey As String, Package As String, Optional UseSSL As Boolean = True)
         _APIKey = APIKey
         _Package = Package
         _UseSSL = UseSSL
@@ -35,15 +35,14 @@ Public NotInheritable Class ComponentWebService
     End Sub
 
     ' Description: Query web service to get proxy information by IP address
-    Public Function IPQuery(ByVal IP As String) As JObject
+    Public Function IPQuery(IP As String) As JObject
         CheckParams() ' check here in case user haven't called Open yet
 
         Dim url As String
         Dim protocol As String = If(_UseSSL, "https", "http")
         url = protocol & "://" & BASE_URL & "?key=" & _APIKey & "&package=" & _Package & "&ip=" & Net.WebUtility.UrlEncode(IP)
-        Dim request As New Http
         Dim rawjson As String
-        rawjson = request.GetMethod(url)
+        rawjson = Http.GetMethod(url)
         Dim results = JsonConvert.DeserializeObject(Of Object)(rawjson)
 
         Return results
@@ -56,9 +55,8 @@ Public NotInheritable Class ComponentWebService
         Dim url As String
         Dim protocol As String = If(_UseSSL, "https", "http")
         url = protocol & "://" & BASE_URL & "?key=" & _APIKey & "&check=true"
-        Dim request As New Http
         Dim rawjson As String
-        rawjson = request.GetMethod(url)
+        rawjson = Http.GetMethod(url)
         Dim results = JsonConvert.DeserializeObject(Of Object)(rawjson)
 
         Return results

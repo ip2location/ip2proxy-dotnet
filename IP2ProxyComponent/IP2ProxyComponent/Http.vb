@@ -2,7 +2,7 @@
 Imports System.Text
 
 Public Class Http
-    Public Function GetMethod(ByVal url As String) As String
+    Public Shared Function GetMethod(url As String) As String
         Dim request As HttpWebRequest
         Dim response As HttpWebResponse
         request = WebRequest.Create(url)
@@ -17,7 +17,7 @@ Public Class Http
         End If
     End Function
 
-    Public Function PostMethod(ByVal url As String, post As String) As String
+    Public Shared Function PostMethod(url As String, post As String) As String
         Dim request As HttpWebRequest
         Dim response As HttpWebResponse
         Dim encode As UTF8Encoding
