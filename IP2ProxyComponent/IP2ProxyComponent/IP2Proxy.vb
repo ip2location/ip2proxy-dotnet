@@ -174,12 +174,12 @@ Public Class Component
     End Function
 
     'Description: Returns an integer to state if is proxy (async)
-    Public Async Function IsProxyAsync(IP As String) As Task(Of ProxyResult)
+    Public Async Function IsProxyAsync(IP As String) As Task(Of Integer)
         ' -1 is error
         '  0 is not a proxy
         '  1 is proxy except DCH and SES
         '  2 is proxy and (DCH or SES)
-        Return Await ProxyQueryAsync(IP, Modes.IS_PROXY)
+        Return (Await ProxyQueryAsync(IP, Modes.IS_PROXY)).Is_Proxy
     End Function
 
     'Description: Returns a string for the country code
@@ -188,8 +188,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the country code (async)
-    Public Async Function GetCountryShortAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.COUNTRY_SHORT)
+    Public Async Function GetCountryShortAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.COUNTRY_SHORT)).Country_Short
     End Function
 
     'Description: Returns a string for the country name
@@ -198,8 +198,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the country name (async)
-    Public Async Function GetCountryLongAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.COUNTRY_LONG)
+    Public Async Function GetCountryLongAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.COUNTRY_LONG)).Country_Long
     End Function
 
     'Description: Returns a string for the region name
@@ -208,8 +208,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the region name (async)
-    Public Async Function GetRegionAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.REGION)
+    Public Async Function GetRegionAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.REGION)).Region
     End Function
 
     'Description: Returns a string for the city name
@@ -218,8 +218,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the city name (async)
-    Public Async Function GetCityAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.CITY)
+    Public Async Function GetCityAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.CITY)).City
     End Function
 
     'Description: Returns a string for the ISP name
@@ -228,8 +228,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the ISP name (async)
-    Public Async Function GetISPAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.ISP)
+    Public Async Function GetISPAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.ISP)).ISP
     End Function
 
     'Description: Returns a string for the proxy type
@@ -238,8 +238,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the proxy type (async)
-    Public Async Function GetProxyTypeAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.PROXY_TYPE)
+    Public Async Function GetProxyTypeAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.PROXY_TYPE)).Proxy_Type
     End Function
 
     'Description: Returns a string for the domain
@@ -248,8 +248,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the domain (async)
-    Public Async Function GetDomainAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.DOMAIN)
+    Public Async Function GetDomainAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.DOMAIN)).Domain
     End Function
 
     'Description: Returns a string for the usage type
@@ -258,8 +258,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the usage type (async)
-    Public Async Function GetUsageTypeAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.USAGE_TYPE)
+    Public Async Function GetUsageTypeAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.USAGE_TYPE)).Usage_Type
     End Function
 
     'Description: Returns a string for the ASN
@@ -268,8 +268,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the ASN (async)
-    Public Async Function GetASNAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.ASN)
+    Public Async Function GetASNAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.ASN)).ASN
     End Function
 
     'Description: Returns a string for the AS
@@ -278,8 +278,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the AS (async)
-    Public Async Function GetASAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.AS)
+    Public Async Function GetASAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.AS)).AS
     End Function
 
     'Description: Returns a string for the last seen
@@ -288,8 +288,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the last seen (async)
-    Public Async Function GetLastSeenAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.LAST_SEEN)
+    Public Async Function GetLastSeenAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.LAST_SEEN)).Last_Seen
     End Function
 
     'Description: Returns a string for the threat
@@ -298,8 +298,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the threat (async)
-    Public Async Function GetThreatAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.THREAT)
+    Public Async Function GetThreatAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.THREAT)).Threat
     End Function
 
     'Description: Returns a string for the provider
@@ -308,8 +308,8 @@ Public Class Component
     End Function
 
     'Description: Returns a string for the provider (async)
-    Public Async Function GetProviderAsync(IP As String) As Task(Of ProxyResult)
-        Return Await ProxyQueryAsync(IP, Modes.PROVIDER)
+    Public Async Function GetProviderAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.PROVIDER)).Provider
     End Function
 
     'Description: Returns all results
