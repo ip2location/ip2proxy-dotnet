@@ -22,6 +22,7 @@ Public Structure ProxyResult
     Public Last_Seen As String
     Public Threat As String
     Public Provider As String
+    Public Fraud_Score As String
 End Structure
 
 Public Class Component
@@ -102,21 +103,23 @@ Public Class Component
         LAST_SEEN = 12
         THREAT = 13
         PROVIDER = 14
+        FRAUD_SCORE = 15
         ALL = 100
     End Enum
 
-    Private ReadOnly COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
-    Private ReadOnly REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4}
-    Private ReadOnly CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5}
-    Private ReadOnly ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6}
-    Private ReadOnly PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
-    Private ReadOnly DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7}
-    Private ReadOnly USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8}
-    Private ReadOnly ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9}
-    Private ReadOnly AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10}
-    Private ReadOnly LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11}
-    Private ReadOnly THREAT_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12}
-    Private ReadOnly PROVIDER_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13}
+    Private ReadOnly COUNTRY_POSITION() As Byte = {0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+    Private ReadOnly REGION_POSITION() As Byte = {0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
+    Private ReadOnly CITY_POSITION() As Byte = {0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5}
+    Private ReadOnly ISP_POSITION() As Byte = {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6}
+    Private ReadOnly PROXYTYPE_POSITION() As Byte = {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
+    Private ReadOnly DOMAIN_POSITION() As Byte = {0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7}
+    Private ReadOnly USAGETYPE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8}
+    Private ReadOnly ASN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9}
+    Private ReadOnly AS_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10}
+    Private ReadOnly LASTSEEN_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11}
+    Private ReadOnly THREAT_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 12}
+    Private ReadOnly PROVIDER_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13}
+    Private ReadOnly FRAUDSCORE_POSITION() As Byte = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14}
 
     Private COUNTRY_POSITION_OFFSET As Integer = 0
     Private REGION_POSITION_OFFSET As Integer = 0
@@ -130,6 +133,7 @@ Public Class Component
     Private LASTSEEN_POSITION_OFFSET As Integer = 0
     Private THREAT_POSITION_OFFSET As Integer = 0
     Private PROVIDER_POSITION_OFFSET As Integer = 0
+    Private FRAUDSCORE_POSITION_OFFSET As Integer = 0
 
     Private COUNTRY_ENABLED As Boolean = False
     Private REGION_ENABLED As Boolean = False
@@ -143,6 +147,7 @@ Public Class Component
     Private LASTSEEN_ENABLED As Boolean = False
     Private THREAT_ENABLED As Boolean = False
     Private PROVIDER_ENABLED As Boolean = False
+    Private FRAUDSCORE_ENABLED As Boolean = False
 
     'Description: Returns the module version
     Public Shared Function GetModuleVersion() As String
@@ -312,6 +317,16 @@ Public Class Component
         Return (Await ProxyQueryAsync(IP, Modes.PROVIDER)).Provider
     End Function
 
+    'Description: Returns a string for the fraud score
+    Public Function GetFraudScore(IP As String) As String
+        Return ProxyQuery(IP, Modes.FRAUD_SCORE).Fraud_Score
+    End Function
+
+    'Description: Returns a string for the fraud score (async)
+    Public Async Function GetFraudScoreAsync(IP As String) As Task(Of String)
+        Return (Await ProxyQueryAsync(IP, Modes.FRAUD_SCORE)).Fraud_Score
+    End Function
+
     'Description: Returns all results
     Public Function GetAll(IP As String) As ProxyResult
         Return ProxyQuery(IP)
@@ -463,6 +478,7 @@ Public Class Component
             LASTSEEN_POSITION_OFFSET = If(LASTSEEN_POSITION(_DBType) <> 0, (LASTSEEN_POSITION(_DBType) - 2) << 2, 0)
             THREAT_POSITION_OFFSET = If(THREAT_POSITION(_DBType) <> 0, (THREAT_POSITION(_DBType) - 2) << 2, 0)
             PROVIDER_POSITION_OFFSET = If(PROVIDER_POSITION(_DBType) <> 0, (PROVIDER_POSITION(_DBType) - 2) << 2, 0)
+            FRAUDSCORE_POSITION_OFFSET = If(FRAUDSCORE_POSITION(_DBType) <> 0, (FRAUDSCORE_POSITION(_DBType) - 2) << 2, 0)
 
             COUNTRY_ENABLED = COUNTRY_POSITION(_DBType) <> 0
             REGION_ENABLED = REGION_POSITION(_DBType) <> 0
@@ -476,6 +492,7 @@ Public Class Component
             LASTSEEN_ENABLED = LASTSEEN_POSITION(_DBType) <> 0
             THREAT_ENABLED = THREAT_POSITION(_DBType) <> 0
             PROVIDER_ENABLED = PROVIDER_POSITION(_DBType) <> 0
+            FRAUDSCORE_ENABLED = FRAUDSCORE_POSITION(_DBType) <> 0
 
             Dim readLen = _IndexArrayIPv4.GetLength(0)
             If _IndexBaseAddrIPv6 > 0 Then
@@ -620,6 +637,7 @@ Public Class Component
                     .Last_Seen = MSG_INVALID_IP
                     .Threat = MSG_INVALID_IP
                     .Provider = MSG_INVALID_IP
+                    .Fraud_Score = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -643,6 +661,7 @@ Public Class Component
                     .Last_Seen = MSG_INVALID_IP
                     .Threat = MSG_INVALID_IP
                     .Provider = MSG_INVALID_IP
+                    .Fraud_Score = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -665,6 +684,7 @@ Public Class Component
                         .Last_Seen = MSG_MISSING_FILE
                         .Threat = MSG_MISSING_FILE
                         .Provider = MSG_MISSING_FILE
+                        .Fraud_Score = MSG_MISSING_FILE
                     End With
                     Return Result
                 End If
@@ -714,6 +734,7 @@ Public Class Component
                             .Last_Seen = MSG_IPV6_UNSUPPORTED
                             .Threat = MSG_IPV6_UNSUPPORTED
                             .Provider = MSG_IPV6_UNSUPPORTED
+                            .Fraud_Score = MSG_IPV6_UNSUPPORTED
                         End With
                         Return Result
                     End If
@@ -771,6 +792,7 @@ Public Class Component
                     Dim Last_Seen As String = MSG_NOT_SUPPORTED
                     Dim Threat As String = MSG_NOT_SUPPORTED
                     Dim Provider As String = MSG_NOT_SUPPORTED
+                    Dim Fraud_Score As String = MSG_NOT_SUPPORTED
 
                     Dim RowLen = ColumnSize - FirstCol
 
@@ -847,6 +869,11 @@ Public Class Component
                             Provider = ReadStr(Read32Row(Row, PROVIDER_POSITION_OFFSET), FS)
                         End If
                     End If
+                    If FRAUDSCORE_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.FRAUD_SCORE Then
+                            Fraud_Score = ReadStr(Read32Row(Row, FRAUDSCORE_POSITION_OFFSET), FS)
+                        End If
+                    End If
 
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
@@ -873,6 +900,7 @@ Public Class Component
                         .Last_Seen = Last_Seen
                         .Threat = Threat
                         .Provider = Provider
+                        .Fraud_Score = Fraud_Score
                     End With
                     Return Result
                 Else
@@ -899,6 +927,7 @@ Public Class Component
                 .Last_Seen = MSG_INVALID_IP
                 .Threat = MSG_INVALID_IP
                 .Provider = MSG_INVALID_IP
+                .Fraud_Score = MSG_INVALID_IP
             End With
             Return Result
         Finally
@@ -954,6 +983,7 @@ Public Class Component
                     .Last_Seen = MSG_INVALID_IP
                     .Threat = MSG_INVALID_IP
                     .Provider = MSG_INVALID_IP
+                    .Fraud_Score = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -977,6 +1007,7 @@ Public Class Component
                     .Last_Seen = MSG_INVALID_IP
                     .Threat = MSG_INVALID_IP
                     .Provider = MSG_INVALID_IP
+                    .Fraud_Score = MSG_INVALID_IP
                 End With
                 Return Result
             End If
@@ -999,6 +1030,7 @@ Public Class Component
                         .Last_Seen = MSG_MISSING_FILE
                         .Threat = MSG_MISSING_FILE
                         .Provider = MSG_MISSING_FILE
+                        .Fraud_Score = MSG_MISSING_FILE
                     End With
                     Return Result
                 End If
@@ -1053,6 +1085,7 @@ Public Class Component
                             .Last_Seen = MSG_IPV6_UNSUPPORTED
                             .Threat = MSG_IPV6_UNSUPPORTED
                             .Provider = MSG_IPV6_UNSUPPORTED
+                            .Fraud_Score = MSG_IPV6_UNSUPPORTED
                         End With
                         Return Result
                     End If
@@ -1110,6 +1143,7 @@ Public Class Component
                     Dim Last_Seen As String = MSG_NOT_SUPPORTED
                     Dim Threat As String = MSG_NOT_SUPPORTED
                     Dim Provider As String = MSG_NOT_SUPPORTED
+                    Dim Fraud_Score As String = MSG_NOT_SUPPORTED
 
                     Dim RowLen = ColumnSize - FirstCol
 
@@ -1186,6 +1220,11 @@ Public Class Component
                             Provider = Await ReadStrAsync(Read32Row(Row, PROVIDER_POSITION_OFFSET), myRef)
                         End If
                     End If
+                    If FRAUDSCORE_ENABLED Then
+                        If Mode = Modes.ALL OrElse Mode = Modes.FRAUD_SCORE Then
+                            Fraud_Score = Await ReadStrAsync(Read32Row(Row, FRAUDSCORE_POSITION_OFFSET), myRef)
+                        End If
+                    End If
 
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
@@ -1212,6 +1251,7 @@ Public Class Component
                         .Last_Seen = Last_Seen
                         .Threat = Threat
                         .Provider = Provider
+                        .Fraud_Score = Fraud_Score
                     End With
                     Return Result
                 Else
@@ -1238,6 +1278,7 @@ Public Class Component
                 .Last_Seen = MSG_INVALID_IP
                 .Threat = MSG_INVALID_IP
                 .Provider = MSG_INVALID_IP
+                .Fraud_Score = MSG_INVALID_IP
             End With
             Return Result
         Finally

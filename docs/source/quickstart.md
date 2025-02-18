@@ -41,10 +41,11 @@ Dim [as] As String
 Dim lastseen As String
 Dim threat As String
 Dim provider As String
+Dim fraudscore As String
 
 Dim ip As String = "221.121.146.0"
 
-If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
+If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER-FRAUDSCORE.BIN", Component.IOModes.IP2PROXY_MEMORY_MAPPED) = 0 Then
 	Console.WriteLine("GetModuleVersion: " & Component.GetModuleVersion())
 	Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
 	Console.WriteLine("GetDatabaseVersion: " & proxy.GetDatabaseVersion())
@@ -65,6 +66,7 @@ If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAG
 	Console.WriteLine("Last_Seen: " & all.Last_Seen)
 	Console.WriteLine("Threat: " & all.Threat)
 	Console.WriteLine("Provider: " & all.Provider)
+	Console.WriteLine("Fraud_Score: " & all.Fraud_Score)
 
 	' reading individual fields
 	isproxy = proxy.IsProxy(ip)
@@ -108,6 +110,9 @@ If proxy.Open("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAG
 
 	provider = proxy.GetProvider(ip)
 	Console.WriteLine("Provider: " & provider)
+
+	fraudscore = proxy.GetFraudScore(ip)
+	Console.WriteLine("Fraud_Score: " & fraudscore)
 Else
 	Console.WriteLine("Error reading BIN file.")
 End If
@@ -139,10 +144,11 @@ Dim [as] As String
 Dim lastseen As String
 Dim threat As String
 Dim provider As String
+Dim fraudscore As String
 
 Dim ip As String = "221.121.146.0"
 
-Using myStream = New FileStream("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN", FileMode.Open, FileAccess.Read, FileShare.Read)
+Using myStream = New FileStream("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER-FRAUDSCORE.BIN", FileMode.Open, FileAccess.Read, FileShare.Read)
 	If proxy.Open(myStream) = 0 Then
 		Console.WriteLine("GetModuleVersion: " & Component.GetModuleVersion())
 		Console.WriteLine("GetPackageVersion: " & proxy.GetPackageVersion())
@@ -164,6 +170,7 @@ Using myStream = New FileStream("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CI
 		Console.WriteLine("Last_Seen: " & all.Last_Seen)
 		Console.WriteLine("Threat: " & all.Threat)
 		Console.WriteLine("Provider: " & all.Provider)
+		Console.WriteLine("Fraud_Score: " & all.Fraud_Score)
 
 		' reading individual fields
 		isproxy = proxy.IsProxyAsync(ip).Result
@@ -207,6 +214,9 @@ Using myStream = New FileStream("C:\data\IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CI
 
 		provider = proxy.GetProviderAsync(ip).Result
 		Console.WriteLine("Provider: " & provider)
+
+		fraudscore = proxy.GetFraudScoreAsync(ip).Result
+		Console.WriteLine("Fraud_Score: " & fraudscore)
 	Else
 		Console.WriteLine("Error reading BIN file.")
 	End If
