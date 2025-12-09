@@ -7,8 +7,8 @@ project = 'IP2Proxy .NET'
 copyright = '2025, IP2Location'
 author = 'IP2Location'
 
-release = '4.1.1'
-version = '4.1.1'
+release = '4.1.2'
+version = '4.1.2'
 
 # -- General configuration
 

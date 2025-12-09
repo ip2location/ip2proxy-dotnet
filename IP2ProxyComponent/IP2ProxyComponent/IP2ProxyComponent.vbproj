@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <RootNamespace>IP2Proxy</RootNamespace>
-    <TargetFrameworks>netstandard2.0;net472;net48;net481;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net48;net481;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <AssemblyName>IP2Proxy</AssemblyName>
-    <Version>4.1.1</Version>
+    <Version>4.1.2</Version>
     <Authors>IP2Proxy.com</Authors>
     <Company>IP2Proxy.com</Company>
     <Product>IP2Proxy .NET Component</Product>
@@ -15,7 +15,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://www.ip2location.com/development-libraries/ip2proxy/dot-net</PackageProjectUrl>
     <PackageIcon>ip2proxy-logo-square-128.png</PackageIcon>
-    <PackageReleaseNotes>Updated compatibility for .NET 9</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated compatibility for .NET 10</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ip2location/ip2proxy-dotnet.git</RepositoryUrl>
     <PackageTags>ip2proxy proxy detection</PackageTags>
     <RepositoryType>git</RepositoryType>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
 </Project>
