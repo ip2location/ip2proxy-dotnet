@@ -173,8 +173,8 @@ Public Class Component
     Public Function IsProxy(IP As String) As Integer
         ' -1 is error
         '  0 is not a proxy
-        '  1 is proxy except DCH and SES
-        '  2 is proxy and (DCH or SES)
+        '  1 is proxy except DCH and SES and AIC
+        '  2 is proxy and (DCH or SES or AIC)
         Return ProxyQuery(IP, Modes.IS_PROXY).Is_Proxy
     End Function
 
@@ -182,8 +182,8 @@ Public Class Component
     Public Async Function IsProxyAsync(IP As String) As Task(Of Integer)
         ' -1 is error
         '  0 is not a proxy
-        '  1 is proxy except DCH and SES
-        '  2 is proxy and (DCH or SES)
+        '  1 is proxy except DCH and SES and AIC
+        '  2 is proxy and (DCH or SES or AIC)
         Return (Await ProxyQueryAsync(IP, Modes.IS_PROXY)).Is_Proxy
     End Function
 
@@ -878,7 +878,7 @@ Public Class Component
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
                     Else
-                        If Proxy_Type = "DCH" OrElse Proxy_Type = "SES" Then
+                        If Proxy_Type = "DCH" OrElse Proxy_Type = "SES" OrElse Proxy_Type = "AIC" Then
                             Is_Proxy = 2
                         Else
                             Is_Proxy = 1
@@ -1229,7 +1229,7 @@ Public Class Component
                     If Country_Short = "-" OrElse Proxy_Type = "-" Then
                         Is_Proxy = 0
                     Else
-                        If Proxy_Type = "DCH" OrElse Proxy_Type = "SES" Then
+                        If Proxy_Type = "DCH" OrElse Proxy_Type = "SES" OrElse Proxy_Type = "AIC" Then
                             Is_Proxy = 2
                         Else
                             Is_Proxy = 1
